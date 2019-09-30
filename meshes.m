@@ -22,14 +22,14 @@ function  C = meshes (datos, malla)
     [ C.stagX_x, C.stagX_y ] = STAGG_MESH_X ( datos, C );
     
     [ C.stagY_x, C.stagY_y ] = STAGG_MESH_Y ( datos, C );
-    
+    %{
     figure; hold on;
     plot(C.Coll_x , C.Coll_y,'k.','MarkerSize', 35) ; 
     plot(C.stagX_x , C.stagX_y,'b.','MarkerSize',20) ;
     plot(C.stagY_x , C.stagY_y,'g.') ;
     ylim ([-0.1 1.1])
     xlim ([-0.1 1.1])
-    
+    %}    
     % Collocated Mesh
 
     V1x = [C.dx(1) datos.L-C.dx(datos.Nx)];
@@ -46,7 +46,7 @@ function  C = meshes (datos, malla)
     V8 = [C.dx(1) datos.H-C.dy(datos.Ny) ];
     V9 = [C.dy(1)+C.dy(2) C.dy(1)+C.dy(2) ]; 
     V10 = [C.dy(1)+C.dy(2)+C.dy(3) C.dy(1)+C.dy(2)+C.dy(3)];
-    
+    %{
     if malla == 1
         hold on;
         plot(V1x,V2y,'k');  plot(V3x,V1y,'k'); plot(V2x,V1y,'k'); plot(V1x,V3y,'k');
@@ -78,7 +78,7 @@ function  C = meshes (datos, malla)
     end
     
     fprintf('---> Mallas calculada\n')      
-   
+   %}
     
 function [ X, Y, dx, dy, Coll_X, Coll_Y ] = COLLOCATED_MESH ( datos )
     
