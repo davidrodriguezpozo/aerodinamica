@@ -1,11 +1,14 @@
 function main
 
+set(groot, 'DefaultTextInterpreter','latex');
+set(groot, 'Defaultaxesticklabelinterpreter','latex');
+
 clear all 
 clc
 close all 
 
 
-for k = 1:1:200
+for k = 3:1:100
 Nx_vector(k) = k; 
 Ny_vector(k) = k;
 
@@ -62,12 +65,21 @@ end
 
 figure;
 loglog(Nx_vector,error_du);
+title('Diffusive term error (x-direction) vs. mesh size');
+
 figure;
 loglog(Nx_vector,error_dv);
+title('Diffusive term error (y-direction) vs. mesh size');
+
 figure;
 loglog(Nx_vector,error_cu);
+title('Convective term error (x-direction) vs. mesh size');
+
 figure;
 loglog(Nx_vector,error_cv);
+title('Convective term error (y-direction) vs. mesh size');
+
+
 
 
 

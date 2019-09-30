@@ -1,16 +1,20 @@
 function main
 
+set(groot, 'DefaultTextInterpreter','latex');
+set(groot, 'Defaultaxesticklabelinterpreter','latex');
+
 clear all 
 clc
 close all 
 
 
+for k = 3:1:100
+Nx_vector(k) = k; 
+Ny_vector(k) = k;
 
-for i = 1:10:100
-Vx(i) = i; 
-Vy(i) = i; 
+Vx = Nx_vector(k);
 
-datos = INPUT(Vx(i),Vy(i));
+datos = INPUT(Vx,Vx);
 C = meshes (datos, datos.malla);
 
 % FEM SOLUCIO ANALITICA
@@ -51,18 +55,22 @@ end
 
 error_mat_cu = abs(S.cu - S.cu_anal);
 
-error_du(i) = ERROR(S.diffu,S.du_anal);
-error_cu(i) = ERROR(S.cu,S.cu_anal);
-error_dv(i) = ERROR(S.diffv,S.dv_anal);
-error_cv(i) = ERROR(S.cv,S.cv_anal);
-Nx_vector(i) = datos.Nx;
+error_du(k) = ERROR(S.diffu,S.du_anal);
+error_cu(k) = ERROR(S.cu,S.cu_anal);
+error_dv(k) = ERROR(S.diffv,S.dv_anal);
+error_cv(k) = ERROR(S.cv,S.cv_anal);
+%Nx_vector(i) = datos.Nx;
 %disp('Error calculat');
 end
 
 figure;
 loglog(Nx_vector,error_du);
+title('Diffusive therm error (x-direction) vs. mesh size');
+
 figure;
 loglog(Nx_vector,error_dv);
+title('Diffusive therm error (y-direction) vs. mesh size');
+
 figure;
 loglog(Nx_vector,error_cu);
 figure;
