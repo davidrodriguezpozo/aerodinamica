@@ -2,7 +2,7 @@
   
 function  C = meshes (datos, malla)
     
-    fprintf('-( 1 )- Calculando mallas...\n'); 
+    %fprintf('-( 1 )- Calculando mallas...\n'); 
         
     % Preallocation of variables
     
@@ -131,7 +131,7 @@ function [ X, Y ] = STAGG_MESH_X ( datos, C )
        end
     end
     
-    fprintf('    Staggered Mesh X calculada\n');
+    %fprintf('    Staggered Mesh X calculada\n');
     
     
     function [ X, Y ] = STAGG_MESH_Y ( datos, C ) 
@@ -153,7 +153,7 @@ function [ X, Y ] = STAGG_MESH_X ( datos, C )
        end
     end
     
-    fprintf('    Staggered Mesh Y calculada\n');
+    %fprintf('    Staggered Mesh Y calculada\n');
 
     
 function delta = spacing_no_uniform (gamma, L, i, N, uniform )

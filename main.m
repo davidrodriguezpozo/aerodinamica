@@ -7,10 +7,12 @@ clear all
 clc
 close all 
 
+div = [3 5 10 20 30 40 50 60 70 100];
 
-for k = 3:1:100
-Nx_vector(k) = k; 
-Ny_vector(k) = k;
+for k = 1:length(div)
+    
+Nx_vector(k) = div(k); 
+Ny_vector(k) = div(k);
 
 Vx = Nx_vector(k);
 
@@ -46,6 +48,15 @@ for i = 1:datos.Nx
     end
 end
 
+%{
+figure
+contourf(C.stagY_x,C.stagY_y,v,'LineWidth',1.5)
+c = colorbar;
+str = {'Y-Velocity'}; 
+c.Label.String = str;
+c.Label.FontSize = 14;
+%}
+
 % FEM SOLUCIO NUMERICAL
 
 [S.cu S.diffu S.cv S.diffv] = Numerical (datos, C, u, v);
@@ -64,20 +75,28 @@ error_cv(k) = ERROR(S.cv,S.cv_anal);
 end
 
 figure;
-loglog(Nx_vector,error_du);
+loglog(1./Nx_vector,error_du,'o-');
 title('Diffusive term error (x-direction) vs. mesh size');
+xlabel('Size of the mesh h');
+ylabel('Error diffusive term (x-dir)');
 
 figure;
-loglog(Nx_vector,error_dv);
+loglog(1./Nx_vector,error_dv,'o-');
 title('Diffusive term error (y-direction) vs. mesh size');
+xlabel('Size of the mesh h');
+ylabel('Error diffusive term (y-dir)');
 
 figure;
-loglog(Nx_vector,error_cu);
+loglog(1./Nx_vector,error_cu,'o-');
 title('Convective term error (x-direction) vs. mesh size');
+xlabel('Size of the mesh h');
+ylabel('Error convective term (x-dir)');
 
 figure;
-loglog(Nx_vector,error_cv);
+loglog(1./Nx_vector,error_cv,'o-');
 title('Convective term error (y-direction) vs. mesh size');
+xlabel('Size of the mesh h');
+ylabel('Error convective term (y-dir)');
 
 
 
@@ -125,7 +144,7 @@ function cu = convection_main (u,v,L,H)
     end
         
 function [conv diff] = Analytic (datos, C, malla)
-
+% This function ... wh
     for i = 2:datos.Nx-1
         for j=2:datos.Ny-1
         

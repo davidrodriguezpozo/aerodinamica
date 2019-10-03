@@ -7,6 +7,7 @@ clear all
 clc
 close all 
 
+divisions =
 
 for k = 3:1:100
 Nx_vector(k) = k; 
@@ -46,6 +47,15 @@ for i = 1:datos.Nx
     end
 end
 
+%{
+figure
+contourf(C.stagY_x,C.stagY_y,v,'LineWidth',1.5)
+c = colorbar;
+str = {'Y-Velocity'}; 
+c.Label.String = str;
+c.Label.FontSize = 14;
+%}
+
 % FEM SOLUCIO NUMERICAL
 
 [S.cu S.diffu S.cv S.diffv] = Numerical (datos, C, u, v);
@@ -64,17 +74,22 @@ error_cv(k) = ERROR(S.cv,S.cv_anal);
 end
 
 figure;
-loglog(Nx_vector,error_du);
-title('Diffusive therm error (x-direction) vs. mesh size');
+loglog(Nx_vector,error_du,'o-');
+title('Diffusive term error (x-direction) vs. mesh size');
 
 figure;
 loglog(Nx_vector,error_dv);
-title('Diffusive therm error (y-direction) vs. mesh size');
+title('Diffusive term error (y-direction) vs. mesh size');
 
 figure;
 loglog(Nx_vector,error_cu);
+title('Convective term error (x-direction) vs. mesh size');
+
 figure;
 loglog(Nx_vector,error_cv);
+title('Convective term error (y-direction) vs. mesh size');
+
+
 
 
 
@@ -120,7 +135,7 @@ function cu = convection_main (u,v,L,H)
     end
         
 function [conv diff] = Analytic (datos, C, malla)
-
+% This function ... wh
     for i = 2:datos.Nx-1
         for j=2:datos.Ny-1
         
