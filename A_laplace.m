@@ -8,6 +8,14 @@ datos = INPUT(Vx,Vx);
 C = meshes (datos, datos.malla);
 A = A_matrix(Vx,Vx);
 
+divA = divergence (A);
+
+
+function divA = divergence (A)
+
+divA = 0;
+
+end
 
 function A = A_matrix(Vx,Vy)
     nodal_mesh = zeros(Vx,Vy);
@@ -55,6 +63,8 @@ function A = A_matrix(Vx,Vy)
            A(i, nodal_mesh(k,j+1)) = 1;
        end
     end
+    
+    A(9,9) =  -4;
 end
 
 
@@ -72,4 +82,5 @@ function datos = INPUT(Vx,Vy)
     datos.malla = 2;
     
     datos.F = 1;
+
 end

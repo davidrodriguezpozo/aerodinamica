@@ -48,6 +48,8 @@ for i = 1:datos.Nx
     end
 end
 
+%A = Poisson (datos, C)
+
 if k == length(div)
     figure
     contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.1) ;
@@ -217,6 +219,9 @@ function datos = INPUT(Vx,Vy)
 
     datos.Nx = Vx+2;
     datos.Ny = Vy+2;
+    
+    datos.Vx = Vx;
+    datos.Vy = Vy;
     
     datos.L = 1;
     datos.H = 1;
