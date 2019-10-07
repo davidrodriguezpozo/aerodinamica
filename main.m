@@ -19,6 +19,10 @@ Vx = Nx_vector(k);
 datos = INPUT(Vx,Vx);
 C = meshes (datos, datos.malla);
 
+matriu_A = zeros(datos.Nx*datos.Nx,datos.Nx*datos.Nx);
+matriu_A = A_laplace(datos,C);
+
+
 % FEM SOLUCIO ANALITICA
 malla = 'x';
 [S.cu_anal S.du_anal] = Analytic (datos, C, malla);

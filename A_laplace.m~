@@ -33,7 +33,7 @@ function A = A_matrix(Vx,Vy)
         %Diagonal term:
         A(i,i) = -4;
         
-       [k j] = find(nodal_mesh == i);     
+       [k j] = find(nodal_mesh == i);      
        %NORD:
        if k-1 == 0 %Aquest node es troba a la frontera esquerra
            A(i, nodal_mesh(Vy,j)) = 1;
@@ -57,7 +57,7 @@ function A = A_matrix(Vx,Vy)
 
        %EAST:
        if j+1 > Vx            
-           A(i, nodal_mesh(k,1)) = 1;
+           A(i, nodal_mesh(1,j)) = 1;
        else
            A(i, nodal_mesh(k,j+1)) = 1;
        end
