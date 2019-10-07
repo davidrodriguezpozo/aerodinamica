@@ -1,31 +1,11 @@
 function A = A_laplace(datos,C)
 
-
 Vx = datos.Vx;
+Vy = datos.Vy;
 
-A = A_matrix(Vx,Vx);
-
-divA = divergence (A);
-
-
-function divA = divergence (A)
-
-divA = 0;
-
-end
+[nodal_mesh num] = nodalmesh(Vx,Vy);
 
 
-
-function A = A_matrix(Vx,Vy)
-    nodal_mesh = zeros(Vx,Vy); %Matriu de tots els nodes dels VC.
-    num = Vx*Vy; %Per sabre fins a quin index arribem
-    ind=1;
-    for i=Vx:-1:1
-        for j=1:Vy
-            nodal_mesh(i,j)=ind; %S'ompla la matriu de nodes amb els index necessaris;
-            ind = ind+1;
-        end
-    end
    
     A = zeros(num,num); %Serà la matriu que es multiplicarà per p.
     
@@ -62,10 +42,5 @@ function A = A_matrix(Vx,Vy)
            A(i, nodal_mesh(k,j+1)) = 1;
        end
     end
-    
-    A(9,9) =  -4;
-end
-
-
 end
 

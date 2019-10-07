@@ -8,7 +8,7 @@ function main_B
  1. Timestep for stability
  2. u_n_1 i u_n conegudes --> R_n_1 i R_n
  3. Evaluar u_p = u_n + ?t(3/2 * R_n - 1/2 * R_N_1
-        R = - Conv(u)/V + Diff(u)/V
+        (R = - C(u)/
  4. Resoldre l'equació de Poisson A * pseudo_p = Div(u_p)
  5. Obtenir pseudo_p
  6. Obtenir u_n1 --> u_n1 = u_p - grad(pseudo_p) 
@@ -30,7 +30,7 @@ C = meshes (datos, datos.malla);
 
 matriu_A = A_laplace(datos,C); %Calculem la matriu per la pseudopressió
 
-pseudo_p = zeros(Vx*Vx,1); %Vector de pseudopressions NO CONEGUT [Vx,1]
+pseudo_p = zeros(Vx*Vx,1); %Vector de pseudopressions NO CONEGUT [Vx*Vx,1]
 
 
 
