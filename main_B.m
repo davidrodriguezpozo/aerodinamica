@@ -23,14 +23,21 @@ clc
 close all 
 
 
-Vx = 4; %Nº de divisions en x de V.C.
+Vx = 3; %Nº de divisions en x de V.C.
+Vy = 3;
 
-datos = INPUT(Vx,Vx);
+datos = INPUT(Vx,Vy);
 C = meshes (datos, datos.malla);
 
-matriu_A = A_laplace(datos,C); %Calculem la matriu per la pseudopressió
+matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A.
 
-pseudo_p = zeros(Vx*Vx,1); %Vector de pseudopressions NO CONEGUT [Vx,1]
+v = zeros(Vx,Vy);
+u = zeros(Vx,Vy);
+u(3,3) = 1;
+
+u_p = divergencia_u(datos, C, u, v);
+
+pseudo_p = zeros(Vx*Vx,1); %Pseudo-pressure vector NOT KNOWN 
 
 
 
