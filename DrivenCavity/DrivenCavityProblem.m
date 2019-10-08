@@ -5,8 +5,12 @@ clc
 close all
 
 Vx = 10; Vx = 10;
-datos = INPUT(Vx,Vx);
+datos = Driven_Input(Vx,Vx);
 C = Driven_mesh (datos); 
+
+disp('A calcular')
+
+
 
 function  C = Driven_mesh (datos)
     
@@ -25,15 +29,15 @@ function  C = Driven_mesh (datos)
     C.stagY_x = zeros (datos.Nx,datos.Ny);
     C.stagY_y = zeros (datos.Nx,datos.Ny);
     
-    [ C.X, C.Y, C.dx, C.dy, C.Coll_x, C.Coll_y ] = COLLOCATED_MESH ( datos );
+    [ C.X, C.Y, C.dx, C.dy, C.Coll_x, C.Coll_y ] = Driven_COLLOCATED_MESH ( datos );
 
-    [ C.stagX_x, C.stagX_y ] = STAGG_MESH_X ( datos, C );
+    [ C.stagX_x, C.stagX_y ] = Driven_STAGG_MESH_X ( datos, C );
     
-    [ C.stagY_x, C.stagY_y ] = STAGG_MESH_Y ( datos, C );
+    [ C.stagY_x, C.stagY_y ] = Driven_STAGG_MESH_Y ( datos, C );
 
     
     
-function [ X, Y, dx, dy, Coll_X, Coll_Y ] = COLLOCATED_MESH ( datos )
+function [ X, Y, dx, dy, Coll_X, Coll_Y ] = Driven_COLLOCATED_MESH ( datos )
     
     % Delta X
     for i = 1:datos.Nx
@@ -65,7 +69,7 @@ function [ X, Y, dx, dy, Coll_X, Coll_Y ] = COLLOCATED_MESH ( datos )
     end
     
     
-function [ X, Y ] = STAGG_MESH_X ( datos, C ) 
+function [ X, Y ] = Driven_STAGG_MESH_X ( datos, C ) 
     
     vector_x = zeros( datos.Nx ,1 );
     
@@ -84,10 +88,10 @@ function [ X, Y ] = STAGG_MESH_X ( datos, C )
        end
     end
     
-    %fprintf('    Staggered Mesh X calculada\n');
+    fprintf('    Staggered Mesh X calculada\n');
     
     
-    function [ X, Y ] = STAGG_MESH_Y ( datos, C ) 
+    function [ X, Y ] = Driven_STAGG_MESH_Y ( datos, C ) 
     
     vector_y = zeros( datos.Ny ,1 );
     
@@ -108,7 +112,7 @@ function [ X, Y ] = STAGG_MESH_X ( datos, C )
  
     fprintf('    Staggered Mesh Y calculada\n');
  
-function datos = INPUT(Vx,Vy)
+function datos = Driven_Input(Vx,Vy)
 
     datos.Nx = Vx+2;
     datos.Ny = Vy+2;
