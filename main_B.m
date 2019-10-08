@@ -33,7 +33,7 @@ matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A.
 
 v = zeros(Vx,Vy);
 u = zeros(Vx,Vy);
-u(3,3) = 1;
+u(2,2) = 1;
 
 u_p = divergencia_u(datos, C, u, v);
 
