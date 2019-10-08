@@ -1,4 +1,19 @@
-function main
+function main_B
+
+%Es la mateixa funcio que el main pero sense les divisions de VC pel M.M.S.
+
+%{  
+                                El Codi hauria de fer això 
+
+ 1. Timestep for stability
+ 2. u_n_1 i u_n conegudes --> R_n_1 i R_n
+ 3. Evaluar u_p = u_n + ?t(3/2 * R_n - 1/2 * R_N_1
+        (R = - C(u)/
+ 4. Resoldre l'equació de Poisson A * pseudo_p = Div(u_p)
+ 5. Obtenir pseudo_p
+ 6. Obtenir u_n1 --> u_n1 = u_p - grad(pseudo_p) 
+ 7. timestep + 1 
+ %}
 
 set(groot, 'DefaultTextInterpreter','latex');
 set(groot, 'Defaultaxesticklabelinterpreter','latex');
@@ -7,32 +22,28 @@ clear all
 clc
 close all 
 
-div = [3 5 10 20 30 40 50 60 70 80 90 100];
 
-for k = 1:length(div)
-    
-Nx_vector(k) = div(k); 
-Ny_vector(k) = div(k);
-
-Vx = Nx_vector(k);
+Vx = 4; %Nº de divisions en x de V.C.
 
 datos = INPUT(Vx,Vx);
 C = meshes (datos, datos.malla);
 
-matriu_A = zeros(datos.Nx*datos.Nx,datos.Nx*datos.Nx);
-matriu_A = A_laplace(datos,C);
+matriu_A = A_laplace(datos,C); %Calculem la matriu per la pseudopressió
+
+pseudo_p = zeros(Vx*Vx,1); %Vector de pseudopressions NO CONEGUT [Vx*Vx,1]
 
 
-% FEM SOLUCIO ANALITICA
-malla = 'x';
-[S.cu_anal S.du_anal] = Analytic (datos, C, malla);
 
-malla = 'y';
-[S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
-
-%disp('Analitica calculada');
-
-clear malla
+% % FEM SOLUCIO ANALITICA
+% malla = 'x';
+% [S.cu_anal S.du_anal] = Analytic (datos, C, malla);
+% 
+% malla = 'y';
+% [S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
+% 
+% %disp('Analitica calculada');
+% 
+% clear malla
 
 % PERFIL VELOCITATS
 
@@ -105,7 +116,6 @@ error_dv(k) = ERROR(S.diffv,S.dv_anal);
 error_cv(k) = ERROR(S.cv,S.cv_anal);
 %Nx_vector(i) = datos.Nx;
 %disp('Error calculat');
-end
 
 figure;
 loglog(1./Nx_vector,error_du,'o-');

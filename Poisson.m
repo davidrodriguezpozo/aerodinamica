@@ -25,7 +25,7 @@ for i = 2:datos.Nx-1
         delta_x = datos.L/datos.Nx;
         delta_y = datos.H/datos.Ny;
         
-        if i==1 || j==1 || j == datos.Ny-1 || i == datos.Nx-1
+        if i==1 || j==1 || j == datos.Ny-1 || i == datos.Nx-1 %Et trobes a un punt de la frontera
              
         else
             
