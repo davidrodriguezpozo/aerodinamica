@@ -34,14 +34,35 @@ matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A.
 v = zeros(Vx,Vy);
 u = zeros(Vx,Vy);
 u(2,2) = 1;
+[nodal_mesh num] = nodalmesh(Vx,Vy)
 
-u_p = divergencia_u(datos, C, u, v);
+u_p = divergencia_u(datos, u, v, nodal_mesh, num);
 
 pseudo_p = zeros(Vx*Vx,1); %Pseudo-pressure vector NOT KNOWN 
 
+
+%Per solucionar el problema de la matriu A singular (no es podria invertir)
+
 matriu_A(1,1)=-5;
 
-pseudo_p = inv(matriu_A)*u_p
+pseudo_p = inv(matriu_A)*u_p;
+
+[p_gradX p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh, num)
+
+u_n1 = u - p_gradX;
+v_n1 = v - p_gradY;
+
+divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
+
+
+%UEEEEEEA dona zero la div jejeje
+%  |
+%  |
+%  V
+%  V
+sum(divvvvvv)
+
+
 
 % % FEM SOLUCIO ANALITICA
 % malla = 'x';
