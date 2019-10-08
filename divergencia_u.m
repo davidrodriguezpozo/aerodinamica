@@ -1,5 +1,5 @@
-function u_p = divergencia_u(datos, C, u, v)
-%This function computes the divergence of the velocity term in each CV.ç
+function div_u = divergencia_u(datos, u, v)
+%This function computes the divergence of the velocity term in each CV.ï¿½
 % u : velocity values of staggered mesh-X amb HALO 
 % v : velocity values of staggered mesh-Y
 
@@ -10,28 +10,28 @@ Delta = datos.L/Vx;
 [nodal_mesh num] = nodalmesh(Vx,Vy);
 
 
- u_p = zeros(num,1); %This is vector ?·u_p (divergence of velocity in each CV).
+ div_u = zeros(num,1); %This is vector ?ï¿½u_p (divergence of velocity in each CV).
 
     for i=1:num
         
-       [k j] = find(nodal_mesh == i);  %With this, one finds the coordinates of the CV.    
+       [j k] = find(nodal_mesh == i);  %With this, one finds the coordinates of the CV.    
      
        u_p = u(k,j);
        v_p = v(k,j);
        
     if k-1 == 0 %Check if node is on the left edge
-       u_w = u(Vx,j);
+       u_w = u(j,Vx);
     else
-       u_w = u(k-1,j); 
+       u_w = u(j,k-1); 
     end
     
-    if j-1 == 0 %check if node is on the upper edge 
-     v_s = v(k,Vy);
+    if j == Vx %check if node is on the lower edge 
+     v_s = v(k,1);
     else
-     v_s = v(k,j-1);
+     v_s = v(k,j+1);
     end
     
-    u_p(i) = Delta*(u_p-u_w+v_p-v_s)
+    div_u(i) = Delta*(u_p-u_w+v_p-v_s);
     
       
 end
