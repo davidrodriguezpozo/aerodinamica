@@ -1,6 +1,6 @@
 function plot_Perfil_Vel (datos,C,u,v)
     figure
-    contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.1) ;
+    contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.05) ;
     c = colorbar;
     str = {'Y-Velocity'}; 
     c.Label.String = str;
@@ -10,7 +10,7 @@ function plot_Perfil_Vel (datos,C,u,v)
     title('Y-Velocity along the domain')
     
     figure
-    contourf(C.stagX_x,C.stagX_y,u,'LineWidth',0.1) ;
+    contourf(C.stagX_x,C.stagX_y,u,'LineWidth',0.05) ;
     c = colorbar;
     str = {'X-Velocity'}; 
     c.Label.String = str;
@@ -33,7 +33,7 @@ function plot_Perfil_Vel (datos,C,u,v)
     end
     
     figure
-    contourf(x_v,y_v,modVel,'LineWidth',0.1) ;
+    contourf(x_v,y_v,modVel,'LineWidth',0.05) ;
     c = colorbar;
     str = {'Module of Velocity'}; 
     c.Label.String = str;
