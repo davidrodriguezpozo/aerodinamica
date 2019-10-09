@@ -35,8 +35,7 @@ clear malla
 
 [S.cu S.diffu S.cv S.diffv] = Numerical (datos, C, u, v);
 
-
-
+% Mostrem el perfil velocitats de manera grafica
 if k == length(div)   
     plot_Perfil_Vel (datos,C,u,v)   
 end
@@ -45,6 +44,7 @@ end
 
 end
 
+% Mostrem els errors versus el tamany de malla
 plotsA(Nx_vector, error_du, error_dv, error_cu, error_cv);
 
 
