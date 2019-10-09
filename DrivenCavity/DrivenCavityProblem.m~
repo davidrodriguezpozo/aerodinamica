@@ -10,7 +10,7 @@ Re = 100;
 datos = Driven_Input(N,Re);
 C = Driven_mesh (datos); 
 
-3disp('A calcular')
+disp('A calcular')
 
 
 
@@ -39,20 +39,20 @@ function  C = Driven_mesh (datos)
     
 function [ X, Y ] = Driven_COLLOCATED_MESH ( datos )
     
-    N = datos.N;
+    N = datos.Nx;
     dx = datos.L/N; dy = datos.H/N;
     
     X(1)=0; X(2) = dx/2; 
-    for i=3:datos.Nx-1
+    for i=3:datos.Nx
         X(i) = X(i-1) + dx; 
     end
-    X(datos.Nx) = X(datos.Nx-1) + dx/2; 
+    X(N+1) = X(N) + dx/2; 
     
-    Y(1)=0; Y(2) = dy/2; 
-    for j=3:datos.Ny-1
+    Y(1)=0; X(2) = dy/2; 
+    for j=2:N
         Y(j) = Y(j-1) + dy; 
     end
-    Y(datos.Ny) = Y(datos.Ny-1) + dy/2; 
+    Y(N+1) = Y(N) + dy/2; 
     
     fprintf('    Collocated Mesh calculada\n');
     
