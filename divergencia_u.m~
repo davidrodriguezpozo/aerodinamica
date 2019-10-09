@@ -1,4 +1,4 @@
-function div_u = divergencia_u(datos, u, v, nodal_mesh, num)
+function u = divergencia_u(datos, C, u, v)
 %This function computes the divergence of the velocity term in each CV.�
 % u : velocity values of staggered mesh-X amb HALO 
 % v : velocity values of staggered mesh-Y
@@ -6,6 +6,8 @@ function div_u = divergencia_u(datos, u, v, nodal_mesh, num)
 Vx = datos.Vx;
 Vy = datos.Vy;
 Delta = datos.L/Vx;
+
+[nodal_mesh num] = nodalmesh(Vx,Vy);
 
 
  div_u = zeros(num,1); %This is vector ?�u_p (divergence of velocity in each CV).
@@ -29,7 +31,7 @@ Delta = datos.L/Vx;
      v_s = v(k,j+1);
     end
     
-    div_u(i) = Delta*(u_p-u_w+v_p-v_s);
+    u_p(i) = Delta*(u_p-u_w+v_p-v_s);
     
       
 end
