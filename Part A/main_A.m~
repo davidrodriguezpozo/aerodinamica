@@ -1,0 +1,112 @@
+function main_A
+
+set(groot, 'DefaultTextInterpreter','latex');
+set(groot, 'Defaultaxesticklabelinterpreter','latex');
+
+clear all 
+clc
+close all 
+
+div = [3 5 10 20 30 40 50 60 70 80 90 100];
+
+for k = 1:length(div)
+    
+Nx_vector(k) = div(k); 
+Ny_vector(k) = div(k);
+
+Vx = Nx_vector(k);
+
+datos = Input(Vx,Vx);
+C = meshes (datos, datos.malla);
+
+% FEM SOLUCIO ANALITICA
+malla = 'x';
+[S.cu_anal S.du_anal] = Analytic (datos, C, malla);
+
+malla = 'y';
+[S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
+
+%disp('Analitica calculada');
+
+clear malla
+
+% PERFIL VELOCITATS
+[u v ] = Velocitats (datos, C);
+
+[S.cu S.diffu S.cv S.diffv] = Numerical (datos, C, u, v);
+
+if k == length(div)
+    figure
+    contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.1) ;
+    c = colorbar;
+    str = {'Y-Velocity'}; 
+    c.Label.String = str;
+    c.Label.FontSize = 14;
+    xlabel('X-axis');
+    ylabel('Y-axis');
+    title('Y-Velocity along the domain')
+    
+    figure
+    contourf(C.stagX_x,C.stagX_y,u,'LineWidth',0.1) ;
+    c = colorbar;
+    str = {'X-Velocity'}; 
+    c.Label.String = str;
+    c.Label.FontSize = 14;
+    xlabel('X-axis');
+    ylabel('Y-axis');
+    title('X-Velocity along the domain')
+    
+    for i = 2:datos.Nx-1
+        for j = 2:datos.Ny-1
+            x_v (i-1,j-1) = C.X(i);
+            y_v (i-1,j-1) = C.Y(j);
+            
+            vel_x = (u(i,j) + u(i-1,j))/2;
+            vel_y = (v(i,j) + v(i,j-1))/2;
+            
+            modVel (i-1,j-1) = sqrt(vel_x^2 + vel_y^2);
+            
+        end
+    end
+    
+    figure
+    contourf(x_v,y_v,modVel,'LineWidth',0.1) ;
+    c = colorbar;
+    str = {'Module of Velocity'}; 
+    c.Label.String = str;
+    c.Label.FontSize = 14;
+    xlabel('X-axis');
+    ylabel('Y-axis');
+    title('Module of Velocity along the domain')
+end
+
+    error_final (datos, C, S, u, v, Nx_vector, k);
+
+end
+
+plotsA(Nx_vector, error_du, error_dv, error_cu, error_cv);
+
+function error_final (datos, C, S, u, v, Nx_vector, k) 
+
+% FEM SOLUCIO NUMERICAL
+
+%disp('Numerica calculada');
+
+error_mat_cu = abs(S.cu - S.cu_anal);
+
+error_du(k) = error(S.diffu,S.du_anal);
+error_cu(k) = error(S.cu,S.cu_anal);
+error_dv(k) = error(S.diffv,S.dv_anal);
+error_cv(k) = error(S.cv,S.cv_anal);
+%Nx_vector(i) = datos.Nx;
+%disp('Error calculat');
+
+
+
+
+ 
+
+    
+
+   
+   

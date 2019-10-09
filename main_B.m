@@ -95,6 +95,7 @@ end
 
 %A = Poisson (datos, C)
 
+%{
 if k == length(div)
     figure
     contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.1) ;
@@ -170,7 +171,7 @@ loglog(1./Nx_vector,error_cv,'o-');
 title('Convective term error (y-direction) vs. mesh size');
 xlabel('Size of the mesh h');
 ylabel('Error convective term (y-dir)');
-
+%}
 
 
 

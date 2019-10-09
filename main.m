@@ -1,4 +1,4 @@
-function main
+function main_A
 
 set(groot, 'DefaultTextInterpreter','latex');
 set(groot, 'Defaultaxesticklabelinterpreter','latex');
