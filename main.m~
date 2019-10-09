@@ -19,6 +19,10 @@ Vx = Nx_vector(k);
 datos = INPUT(Vx,Vx);
 C = meshes (datos, datos.malla);
 
+matriu_A = zeros(datos.Nx*datos.Nx,datos.Nx*datos.Nx);
+matriu_A = A_laplace(datos,C);
+
+
 % FEM SOLUCIO ANALITICA
 malla = 'x';
 [S.cu_anal S.du_anal] = Analytic (datos, C, malla);
@@ -31,6 +35,8 @@ malla = 'y';
 clear malla
 
 % PERFIL VELOCITATS
+u = zeros(datos.Nx, datos.Ny);
+v = zeros(datos.Nx, datos.Ny);
 
 for i = 1:datos.Nx
     for j = 1:datos.Ny
@@ -48,32 +54,41 @@ for i = 1:datos.Nx
     end
 end
 
+
 if k == length(div)
     figure
-    contourf(C.stagY_x,C.stagY_y,v,'LineWidth',1.5) ;
+    contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.1) ;
     c = colorbar;
     str = {'Y-Velocity'}; 
     c.Label.String = str;
     c.Label.FontSize = 14;
     
     figure
-    contourf(C.stagX_x,C.stagX_y,u,'LineWidth',1.5) ;
+    contourf(C.stagX_x,C.stagX_y,u,'LineWidth',0.1) ;
     c = colorbar;
-    str = {'Y-Velocity'}; 
+    str = {'X-Velocity'}; 
     c.Label.String = str;
     c.Label.FontSize = 14;
     
     for i = 2:datos.Nx-1
         for j = 2:datos.Ny-1
             x_v (i-1,j-1) = C.X(i);
-            y_v (i-1,j-1) = C.Y(i);
+            y_v (i-1,j-1) = C.Y(j);
             
-            vel_x = (u(i+1,j) + u(i,j))/2;
+            vel_x = (u(i,j) + u(i-1,j))/2;
+            vel_y = (v(i,j) + v(i,j-1))/2;
             
-            modVel (i-1,j-1) = ;
+            modVel (i-1,j-1) = sqrt(vel_x^2 + vel_y^2);
             
         end
     end
+    
+    figure
+    contourf(x_v,y_v,modVel,'LineWidth',0.1) ;
+    c = colorbar;
+    str = {'Module of Velocity'}; 
+    c.Label.String = str;
+    c.Label.FontSize = 14;
 end
 
 % FEM SOLUCIO NUMERICAL
@@ -209,6 +224,9 @@ function datos = INPUT(Vx,Vy)
 
     datos.Nx = Vx+2;
     datos.Ny = Vy+2;
+    
+    datos.Vx = Vx;
+    datos.Vy = Vy;
     
     datos.L = 1;
     datos.H = 1;

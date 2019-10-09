@@ -1,4 +1,19 @@
-function main
+function main_C
+
+%Es la mateixa funcio que el main pero sense les divisions de VC pel M.M.S.
+
+%{  
+                                El Codi hauria de fer aix� 
+
+ 1. Timestep for stability
+ 2. u_n_1 i u_n conegudes --> R_n_1 i R_n
+ 3. Evaluar u_p = u_n + ?t(3/2 * R_n - 1/2 * R_N_1
+        R = - Conv(u)/V + Diff(u)/V
+ 4. Resoldre l'equaci� de Poisson A * pseudo_p = Div(u_p)
+ 5. Obtenir pseudo_p
+ 6. Obtenir u_n1 --> u_n1 = u_p - grad(pseudo_p) 
+ 7. timestep + 1 
+ %}
 
 set(groot, 'DefaultTextInterpreter','latex');
 set(groot, 'Defaultaxesticklabelinterpreter','latex');
@@ -7,36 +22,98 @@ clear all
 clc
 close all 
 
-div = [3 5 10 20 30 40 50 60 70 80 90 100];
 
-for k = 1:length(div)
-    
-Nx_vector(k) = div(k); 
-Ny_vector(k) = div(k);
+Vx = 5; %N� de divisions en x de V.C.
+Vy = 5;
 
-Vx = Nx_vector(k);
-
-datos = INPUT(Vx,Vx);
+datos = INPUT(Vx,Vy);
 C = meshes (datos, datos.malla);
 
-matriu_A = zeros(datos.Nx*datos.Nx,datos.Nx*datos.Nx);
-matriu_A = A_laplace(datos,C);
+matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A.
 
-
-% FEM SOLUCIO ANALITICA
-malla = 'x';
-[S.cu_anal S.du_anal] = Analytic (datos, C, malla);
-
-malla = 'y';
-[S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
-
-%disp('Analitica calculada');
-
-clear malla
-
+%Perfil de velocitats:
 % PERFIL VELOCITATS
 u = zeros(datos.Nx, datos.Ny);
 v = zeros(datos.Nx, datos.Ny);
+for i = 1:datos.Nx
+    for j = 1:datos.Ny
+        
+        x = C.stagX_x(i,j);
+        y = C.stagX_y(i,j);
+        
+        u(i,j) = datos.F*cos(2*pi*x)*sin(2*pi*y);
+        
+        x = C.stagY_x(i,j);
+        y = C.stagY_y(i,j);
+        
+        v(i,j) = -datos.F*cos(2*pi*y)*sin(2*pi*x);
+        
+    end
+end
+
+%STEP TIME FOR STABILITY:
+%nu = 1.5e-5 -> Viscosidad cinemática [m2/s] aire
+nu=1.5e-5;
+%Time for convective term
+Tc = min((datos.L/(datos.Vx*max(max(u)))), (datos.H/(datos.Vy*max(max(v)))));
+%Time for diffusive term
+Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / nu;
+
+%Step time:
+delta_T =0.4 * min(Tc,Td);
+
+%Calculem R: R = - Conv(u)/V + Diff(u)/V
+[conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v)
+Vol = (datos.L/datos.Vx)*(datos.H/datos.Vy);
+R_u = -(conv_u/Vol) + (diff_u/Vol)
+
+
+
+
+[nodal_mesh num] = nodalmesh(Vx,Vy)
+
+u_p = divergencia_u(datos, u, v, nodal_mesh, num);
+
+pseudo_p = zeros(Vx*Vx,1); %Pseudo-pressure vector NOT KNOWN 
+
+
+%Per solucionar el problema de la matriu A singular (no es podria invertir)
+
+matriu_A(1,1)=-5;
+
+pseudo_p = inv(matriu_A)*u_p;
+
+[p_gradX p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh, num)
+
+u_n1 = u - p_gradX;
+v_n1 = v - p_gradY;
+
+divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
+
+
+%UEEEEEEA dona zero la div jejeje
+%  |
+%  |
+%  V
+%  V
+sum(divvvvvv)
+
+
+
+
+
+% % FEM SOLUCIO ANALITICA
+% malla = 'x';
+% [S.cu_anal S.du_anal] = Analytic (datos, C, malla);
+% 
+% malla = 'y';
+% [S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
+% 
+% %disp('Analitica calculada');
+% 
+% clear malla
+
+% PERFIL VELOCITATS
 
 for i = 1:datos.Nx
     for j = 1:datos.Ny
@@ -54,6 +131,7 @@ for i = 1:datos.Nx
     end
 end
 
+%A = Poisson (datos, C)
 
 if k == length(div)
     figure
@@ -106,7 +184,6 @@ error_dv(k) = ERROR(S.diffv,S.dv_anal);
 error_cv(k) = ERROR(S.cv,S.cv_anal);
 %Nx_vector(i) = datos.Nx;
 %disp('Error calculat');
-end
 
 figure;
 loglog(1./Nx_vector,error_du,'o-');
