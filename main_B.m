@@ -62,21 +62,6 @@ divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
 %  V
 sum(divvvvvv)
 
-
-
-% % FEM SOLUCIO ANALITICA
-% malla = 'x';
-% [S.cu_anal S.du_anal] = Analytic (datos, C, malla);
-% 
-% malla = 'y';
-% [S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
-% 
-% %disp('Analitica calculada');
-% 
-% clear malla
-
-% PERFIL VELOCITATS
-
 for i = 1:datos.Nx
     for j = 1:datos.Ny
         
@@ -93,88 +78,6 @@ for i = 1:datos.Nx
     end
 end
 
-%A = Poisson (datos, C)
-
-if k == length(div)
-    figure
-    contourf(C.stagY_x,C.stagY_y,v,'LineWidth',0.1) ;
-    c = colorbar;
-    str = {'Y-Velocity'}; 
-    c.Label.String = str;
-    c.Label.FontSize = 14;
-    
-    figure
-    contourf(C.stagX_x,C.stagX_y,u,'LineWidth',0.1) ;
-    c = colorbar;
-    str = {'X-Velocity'}; 
-    c.Label.String = str;
-    c.Label.FontSize = 14;
-    
-    for i = 2:datos.Nx-1
-        for j = 2:datos.Ny-1
-            x_v (i-1,j-1) = C.X(i);
-            y_v (i-1,j-1) = C.Y(j);
-            
-            vel_x = (u(i,j) + u(i-1,j))/2;
-            vel_y = (v(i,j) + v(i,j-1))/2;
-            
-            modVel (i-1,j-1) = sqrt(vel_x^2 + vel_y^2);
-            
-        end
-    end
-    
-    figure
-    contourf(x_v,y_v,modVel,'LineWidth',0.1) ;
-    c = colorbar;
-    str = {'Module of Velocity'}; 
-    c.Label.String = str;
-    c.Label.FontSize = 14;
-end
-
-% FEM SOLUCIO NUMERICAL
-
-[S.cu S.diffu S.cv S.diffv] = Numerical (datos, C, u, v);
-
-%disp('Numerica calculada');
-
-
-error_mat_cu = abs(S.cu - S.cu_anal);
-
-error_du(k) = ERROR(S.diffu,S.du_anal);
-error_cu(k) = ERROR(S.cu,S.cu_anal);
-error_dv(k) = ERROR(S.diffv,S.dv_anal);
-error_cv(k) = ERROR(S.cv,S.cv_anal);
-%Nx_vector(i) = datos.Nx;
-%disp('Error calculat');
-
-figure;
-loglog(1./Nx_vector,error_du,'o-');
-title('Diffusive term error (x-direction) vs. mesh size');
-xlabel('Size of the mesh h');
-ylabel('Error diffusive term (x-dir)');
-
-figure;
-loglog(1./Nx_vector,error_dv,'o-');
-title('Diffusive term error (y-direction) vs. mesh size');
-xlabel('Size of the mesh h');
-ylabel('Error diffusive term (y-dir)');
-
-figure;
-loglog(1./Nx_vector,error_cu,'o-');
-title('Convective term error (x-direction) vs. mesh size');
-xlabel('Size of the mesh h');
-ylabel('Error convective term (x-dir)');
-
-figure;
-loglog(1./Nx_vector,error_cv,'o-');
-title('Convective term error (y-direction) vs. mesh size');
-xlabel('Size of the mesh h');
-ylabel('Error convective term (y-dir)');
-
-
-
-
-
 function [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v)
 
         conv_u = convection_main(u,v,datos.L,datos.H);
@@ -182,7 +85,6 @@ function [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v)
 
         conv_v = convection_main(v,u,datos.H,datos.L);
         diff_v = diffusion_u(v,datos.H);
-
 
 
 function cu = convection_main (u,v,L,H)
@@ -215,7 +117,8 @@ function cu = convection_main (u,v,L,H)
         cu(i-1,j-1) = Fe*ue - Fw*uw + Fn*un - Fs*us;
         end
     end
-        
+
+    
 function [conv diff] = Analytic (datos, C, malla)
 % This function ... wh
     for i = 2:datos.Nx-1
