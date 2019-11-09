@@ -17,7 +17,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
 function main_A
 
 set(groot, 'DefaultTextInterpreter','latex');
@@ -43,12 +42,10 @@ C = meshes (datos, datos.malla);
 
 % Initializing functions which will calculate the analyitical solution
 malla = 'x'; % It will allow to separate problems between both axis. 
-[S.cu_anal S.du_anal] = Analytic (datos, C, malla);
+[S.cu_analytic S.du_analytic] = Analytic (datos, C, malla);
 
 malla = 'y';
-[S.cv_anal S.dv_anal] = Analytic (datos, C, malla);
-
-
+[S.cv_analytic S.dv_analytic] = Analytic (datos, C, malla);
 
 clear malla
 

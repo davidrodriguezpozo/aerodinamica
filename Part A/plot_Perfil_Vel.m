@@ -7,7 +7,7 @@ function plot_Perfil_Vel (datos,C,u,v)
     c.Label.FontSize = 14;
     xlabel('X-axis');
     ylabel('Y-axis');
-    title('Y-Velocity along the domain')
+    title('Y-Velocity along the domain','Fontsize',16)
     
     figure
     contourf(C.stagX_x,C.stagX_y,u,'LineWidth',0.05) ;
@@ -17,7 +17,7 @@ function plot_Perfil_Vel (datos,C,u,v)
     c.Label.FontSize = 14;
     xlabel('X-axis');
     ylabel('Y-axis');
-    title('X-Velocity along the domain')
+    title('X-Velocity along the domain','Fontsize',16)
     
     for i = 2:datos.Nx-1
         for j = 2:datos.Ny-1
@@ -40,4 +40,4 @@ function plot_Perfil_Vel (datos,C,u,v)
     c.Label.FontSize = 14;
     xlabel('X-axis');
     ylabel('Y-axis');
-    title('Module of Velocity along the domain')
+    title('Module of Velocity along the domain','Fontsize',16)

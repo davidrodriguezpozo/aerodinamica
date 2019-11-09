@@ -39,7 +39,7 @@ function [conv diff] = Analytic (datos, C, malla)
         du_dx = - datos.F*2*pi*sin(2*pi*x)*sin(2*pi*y);
         du_dy = datos.F*2*pi*cos(2*pi*x)*cos(2*pi*y);
         dv_dx = -datos.F*2*pi*cos(2*pi*y)*cos(2*pi*x);
-        dv_dy = datos.F*2*pi*sin(2*pi*y)*sin(2*pi*x);
+        dv_dy = datos.F*2*pi*cos(2*pi*y)*sin(2*pi*x);
         
         % Second derivatives are computed
         d2u_dx2 = - datos.F^2*4*pi^2*sin(2*pi*y)*cos(2*pi*x);
@@ -49,12 +49,12 @@ function [conv diff] = Analytic (datos, C, malla)
         % Then and finally, the convective and diffusive terms are computed for each mesh. 
         if strcmp(malla,'x') == 1
             
-            conv(i-1,j-1) = Sup*(u*du_dx + u*dv_dx); %u * du/dx 
+            conv(i-1,j-1) = Sup*(u*du_dx + u*dv_dx); %u * du/dx + u * dv/dx
             diff(i-1,j-1) = Sup*(d2u_dx2); 
             
         elseif strcmp(malla,'y') == 1
             
-            conv(i-1,j-1) = Sup*(v*du_dy + v*dv_dy); %v * du/dx 
+            conv(i-1,j-1) = Sup*(v*du_dy + v*dv_dy); %v * du/dy + v * dv/dy
             diff(i-1,j-1) = Sup*(d2v_dy2); 
         
         end 

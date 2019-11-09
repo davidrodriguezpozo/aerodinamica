@@ -7,7 +7,7 @@ close all
 %Es la mateixa funcio que el main pero sense les divisions de VC pel M.M.S.
 
 %{  
-                                El Codi hauria de fer aix� 
+            El Codi hauria de fer aix� 
 
  1. Timestep for stability
  2. u_n_1 i u_n conegudes --> R_n_1 i R_n
@@ -44,7 +44,6 @@ u_p = divergencia_u(datos, u, v, nodal_mesh, num);
 
 pseudo_p = zeros(Vx*Vx,1); %Pseudo-pressure vector NOT KNOWN 
 
-
 %Per solucionar el problema de la matriu A singular (no es podria invertir)
 
 matriu_A(1,1)=-5;
@@ -58,12 +57,12 @@ v_n1 = v - p_gradY;
 
 divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
 
-
 %UEEEEEEA dona zero la div jejeje
 %  |
 %  |
 %  V
 %  V
 sum(divvvvvv)
+
 
 
