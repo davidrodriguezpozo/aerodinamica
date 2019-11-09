@@ -27,8 +27,8 @@ clc
 close all 
 
 
-Vx = 3; %N� de divisions en x de V.C.
-Vy = 3;
+Vx = 10; %N� de divisions en x de V.C.
+Vy = 10;
 
 datos = Input(Vx,Vy);
 C = meshes (datos, datos.malla);
@@ -63,6 +63,26 @@ divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
 %  V
 %  V
 sum(divvvvvv)
+
+%% AÑADO
+    rho = 1;
+    
+    delta_T = 1;
+    
+    p = pseudo_p * delta_T / rho; 
+    
+    k = 1; t = 1;
+    for i=1:size(p,1)
+        if k <= datos.Vx
+            p_mat(k,t) = p(i);
+            k = k+1;
+        else
+            k = 1; t = t+1;
+            p_mat(k,t) = p(i);
+        end
+    end
+    
+    disp('finished');
 
 
 
