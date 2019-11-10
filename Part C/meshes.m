@@ -21,6 +21,7 @@ function  C = meshes (datos, malla)
     % A C class is defined in order to organise all the outputs of the
     % function.
   
+    disp ('AAAA')
         
     % Preallocation of variables: X and Y positions (corresponding to
     % collocated locations), incrementals, staggered (x and y) matrixes
@@ -109,27 +110,21 @@ function  C = meshes (datos, malla)
 % (computing delta X and delta Y for every type of distribution)
 function [ X, Y, dx, dy, Coll_X, Coll_Y ] = COLLOCATED_MESH ( datos )
     
-    % Computing Delta X
-    for i = 1:datos.Nx
-            dx(i) = spacing_no_uniform( datos.gamma, datos.L, i, datos.Nx, datos.uniform ) - spacing_no_uniform( datos.gamma, datos.L, i-1, datos.Nx, datos.uniform );
-    end 
+    dx = datos.L/datos.Vx;
     
-    % Computing Delta Y
-    for j = 1:datos.Ny
-            dy(j) = spacing_no_uniform( datos.gamma, datos.H, j, datos.Ny, datos.uniform ) - spacing_no_uniform( datos.gamma, datos.H, j-1, datos.Ny, datos.uniform );
-    end 
+    dy = datos.H/datos.Vy;
     
     % Computing the X-position of COLLOCATED MESH
-    X(1) = dx(1)/2; % X is inicialized in the average center of both VC faces
+    X(1) = -dx/2; % X is inicialized in the average center of both VC faces
     for i = 2:datos.Nx
-        X(i) = X(i-1) + dx(i-1); % Delta X is added in each defined position from the second one
+        X(i) = X(i-1) + dx; % Delta X is added in each defined position from the second one
     end
     
     
     % Computing the Y-position of COLLOCATED MESH
-    Y(1) = dy(1)/2; % Y is inicialized in the average center of both VC faces
+    Y(1) = -dy/2; % Y is inicialized in the average center of both VC faces
     for j = 2:datos.Ny
-        Y(j) = Y(j-1) + dy(j-1); % Delta Y is added in each defined position from the second one
+        Y(j) = Y(j-1) + dy; % Delta Y is added in each defined position from the second one
     end
     
     % Finally, the whole mesh is joined using as reference the coordenate
@@ -150,10 +145,10 @@ function [ X, Y ] = STAGG_MESH_X ( datos, C )
     vector_x = zeros( datos.Nx ,1 );
     
     % The mesh starts in the first position (0)
-    vector_x(1) = 0;
+    vector_x(1) = -C.dx(1)/2;
     
     for i = 2:datos.Nx
-        vector_x(i) = vector_x(i-1) + C.dx(i); 
+        vector_x(i) = vector_x(i-1) + C.dx; 
         % From the first position, the incremental calculated before is 
         % added in each point. Adding the same delta that in the collocated
         % mesh assures the same VC length.
