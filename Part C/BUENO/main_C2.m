@@ -1,33 +1,16 @@
 function main_C
 
- 
-
 set(groot, 'DefaultTextInterpreter','latex');
-
 set(groot, 'Defaultaxesticklabelinterpreter','latex');
 set(groot, 'DefaultLegendInterpreter','latex');
 
-set(groot, 'DefaultLegendInterpreter','latex');
-
- 
-
 clear all 
-
 clc
-
 close all 
 
- 
-
- 
-
 Vx = 10; 
-
 Vy = 10;
-
 Re = 1000;
-
- 
 
 datos = INPUT(Vx,Vy,Re);
 
@@ -310,13 +293,9 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     P_anal(index)=-(exp(-8*pi^2*mu*time))^2*(rho*(cos(4*pi*C.Coll_x(3,3))+cos(4*pi*C.Coll_y(3,3))))/4;
 
     P_vec(index)=P(3,3);
-<<<<<<< HEAD
 
     u_anal(index) = datos.F*cos(2*pi*C.stagX_x(3,3))*sin(2*pi*C.stagX_y(3,3));
 
-=======
-    u_anal(index) = datos.F*cos(2*pi*C.stagX_x(3,3))*sin(2*pi*C.stagX_y(3,3));
->>>>>>> 05e61a76130563405de2bb432f4a2254f47df8c6
     
 
     errorP(index) = abs(P_anal(index) - P_vec(index));
@@ -427,7 +406,6 @@ semilogy(acu_time,P_vec);
 
 legend('Analytic','Numerical')
 
-<<<<<<< HEAD
  
 
 figure; 
@@ -446,16 +424,6 @@ title(['Horizontal Velocity at point x =',posx,' and y = ',posy]);
 
  
 
-=======
-figure; 
-semilogy(acu_time,u_anal); hold on;
-semilogy(acu_time,u_vector);
-legend('Analytic','Numerical');
-posx = num2str(C.stagX_x(3,3));
-posy = num2str(C.stagX_y(3,3));
-title(['Horizontal Velocity at point x =',posx,' and y = ',posy]);
-
->>>>>>> 05e61a76130563405de2bb432f4a2254f47df8c6
 disp('AA');
 
 figure;
@@ -615,6 +583,8 @@ nodal_mesh = [4  5  6]
         end
 
     end
+
+
 
 
 
