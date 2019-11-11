@@ -1,6 +1,6 @@
 function [P P_prev dif_P] = SolverP (ae, aw, an, as, ap, bp, P_prev, P, dif_P, d)
         
-    delta = 1e-6;
+    delta = 1e-7;
     dif_P = 1;
     while dif_P>=delta 
          P_prev = P;
