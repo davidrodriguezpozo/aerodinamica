@@ -1,7 +1,7 @@
 function du = diffusion_u(u,L)
 
-N = size(u,2);
-M = size(u,1);
+N = size(u,1);
+M = size(u,2);
 du = zeros(N,M);
 dx = L/(N-2);
 dy = L/(M-2);
@@ -20,11 +20,13 @@ for i = 2:N-1
         uS = u(i-1,j);
 
         %du(i,j) = (uE - uP) / dx * Se + (uP-uW)/ dx * Sw + (uN-uP)/dy * Sn + (uP-uS)/dy * Ss;
-        
-        dx = 0.2;
       
         du(i,j)=(u(i,j+1)-u(i,j))/dx*dx-(u(i,j)-u(i,j-1))/dx*dx...
           + (u(i+1,j)-u(i,j))/dx*dx-(u(i,j)-u(i-1,j))/dx*dx;
+      
+        du(i,j)=(u(i,j+1)-u(i,j))/(dx)*(dx)-(u(i,j)-u(i,j-1))/(dx)*(dx)...
+          + (u(i+1,j)-u(i,j))/(dx)*(dx)-(u(i,j)-u(i-1,j))/(dx)*(dx);
+      
         a = 1;
     end
 end

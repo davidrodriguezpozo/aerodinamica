@@ -78,9 +78,12 @@ dif_U = 1;
 dif_V = 1;
 delta_V = 1e-5;
 
-    Nx = datos.Nx;
-    Ny = datos.Ny;
+Nx = datos.Nx;
+Ny = datos.Ny;
 
+Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
+delta_T = 0.02;
+    
 while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     R_u_prev = R_u;
@@ -88,22 +91,6 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     u_prev = u;
     v_prev = v;
-    
-    %Time for convective term
-    Tc_u = min(datos.L/(datos.Vx*max(max(u))));
-    Tc_v = min(datos.H/(datos.Vy*max(max(v))));
-    Tc = min (Tc_u,Tc_v)
-    %Time for diffusive term
-    Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
-    
-    %Step time:
-    delta_T =0.2 * min(Tc,Td);
-    
-    %delta_T = 0.0421; %per 5
-    
-    time = time + delta_T;
-    
-    datos.F = exp(-8*pi^2*datos.mu*time);
     
     for i = 1:datos.Nx
         for j = 1:datos.Ny
@@ -220,6 +207,22 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
             end
         end
     end
+    
+        %Time for convective term
+    Tc_u = min(datos.L/(datos.Vx*max(max(u))));
+    Tc_v = min(datos.H/(datos.Vy*max(max(v))));
+    Tc = min (Tc_u,Tc_v)
+    %Time for diffusive term
+    Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
+    
+    %Step time:
+    delta_T =0.2 * min(Tc,Td);
+    
+    %delta_T = 0.0421; %per 5
+    
+    time = time + delta_T;
+    
+    datos.F = exp(-8*pi^2*datos.mu*time);
     
     %% UPDATE OF VELOCITY FIELD
     
