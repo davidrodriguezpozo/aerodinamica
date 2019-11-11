@@ -1,3 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%      FUNCTION DELTA_T               %%%%%%%%%%%
+%%% This function computes the time-step incremental for%%%
+%%% the part-C soltion dividing into the convective and %%%
+%%% diffusive time-step. The minimum between both is    %%%
+%%% used in other functions.                            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function delta_T = TimeStep (datos,u,v)
         %Time for convective term
     Tc_u = min(datos.L/(datos.Vx*max(max(u))));
@@ -8,4 +17,4 @@ function delta_T = TimeStep (datos,u,v)
     
     %Step time:
     delta_T =0.2 * min(Tc,Td);
-    delta_T =0.02 ;
+    % delta_T =0.02 ;

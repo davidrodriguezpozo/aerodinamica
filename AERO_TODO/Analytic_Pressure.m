@@ -1,5 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%    FUNCTION ANALYTIC PRESSURE     %%%%%%%%%%%%%
+%%% This function computes the analytical solution for  %%%
+%%% the pressure defined in this own function. The solu-%%%
+%%% tion is obtained for the x and y directions.        %%%
+%%% Initial inputs are used as a initial data.          %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 function p = Analytic_Pressure (datos, C, time)
-% This function ... wh
+
     for i = 1:datos.Nx
         for j=1:datos.Ny
         

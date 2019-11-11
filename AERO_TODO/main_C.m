@@ -22,6 +22,6 @@ ii = 3; jj = 3;
 
 [u v P P_an P_num u_an u_num v_an v_num acu_time] = SolverC(datos, C, ii, jj);
 
-plotsC (u, v, P, P_an, P_num, u_an, u_num, v_an, v_num, acu_time, C, ii, jj);
+plotsC (u, v, P, P_an, P_num, u_an, u_num, v_an, v_num, acu_time, C, ii, jj, datos);
 
 
