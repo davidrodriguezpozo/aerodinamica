@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%      FUNCTION CONDICIONES INICIALES     %%%%%%%
+%%% This function sumarizes all the initial conditions  %%%
+%%% in order have them ordered. It uses the structure   %%%
+%%% "datos", which has the inputs, and then inisializes %%%
+%%% the u and v velocitiy in a pre-determined velocity  %%%
+%%% field. The haloupdated function is executed.        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     function [u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C)
         
     u = zeros(datos.Nx, datos.Ny);
