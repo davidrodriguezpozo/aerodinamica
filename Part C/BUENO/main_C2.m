@@ -85,6 +85,8 @@ Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
 delta_T = 0.02;
 time = delta_T;
     
+index = 1;
+
 while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     R_u_prev = R_u;
@@ -181,15 +183,15 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     rho = datos.rho;
     mu = datos.mu;
    
-    index = 1;
+    index = index+1;
     t_vector(index)=time;
     u_vector(index)=u(3,3);
     v_vector(index)=v(3,3);
     P_anal(index)=-(exp(-8*pi^2*mu/rho*time))^2*(rho*(cos(4*pi*C.Coll_x(3,3))+cos(4*pi*C.Coll_y(3,3))))/4;
     P_vec(index)=P(3,3);
     
-    error = P(3,3) - P_anal(index);
-    error = P(3,3) - P_anal(index);
+    %error = P(3,3) - P_anal(index);
+    %error = P(3,3) - P_anal(index);
     %error = ERROR(P,p_analytic)
 
     [p_gradX p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh, num);
