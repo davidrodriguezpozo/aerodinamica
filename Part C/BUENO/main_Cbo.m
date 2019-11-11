@@ -143,7 +143,7 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     P = haloupdate(P);
     
-    p_analytic = Analytic_Pressure (datos, C);
+    p_analytic = Analytic_Pressure (datos, C, time);
     
     rho = datos.rho;
     mu = datos.mu;
