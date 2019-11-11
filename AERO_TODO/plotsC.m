@@ -1,3 +1,9 @@
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function plotsC (u, v, P, P_an, P_num, u_an, u_num, v_an, v_num, acu_time, C, ii, jj, datos)
 
 % 

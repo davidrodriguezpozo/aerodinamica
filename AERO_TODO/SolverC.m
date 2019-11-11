@@ -10,6 +10,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function [u v P P_an P_num u_an u_num v_an v_num acu_time] =  SolverC(datos, C, ii, jj)
 
 [u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C);

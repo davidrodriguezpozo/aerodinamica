@@ -7,7 +7,13 @@
 %%% field. The haloupdated function is executed.        %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
     function [u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C)
         
     u = zeros(datos.Nx, datos.Ny);

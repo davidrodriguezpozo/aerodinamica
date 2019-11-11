@@ -1,3 +1,9 @@
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function main_A
 
 %set(groot, 'DefaultTextInterpreter','latex');

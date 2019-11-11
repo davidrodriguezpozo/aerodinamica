@@ -1,3 +1,9 @@
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function datos = INPUT(Vx,Vy,Re)
 
     datos.Nx = Vx+2;

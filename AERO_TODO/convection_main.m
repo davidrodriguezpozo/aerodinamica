@@ -1,3 +1,9 @@
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function [cu cv] = convection_main (u,v,L,H,C)
     
 

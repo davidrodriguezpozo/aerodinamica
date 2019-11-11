@@ -1,3 +1,9 @@
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function B=haloupdate(B)
 
 N=size(B,1)-2;

@@ -1,4 +1,10 @@
-    function [cp] = Coeff_Pressure (datos)
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
+function [cp] = Coeff_Pressure (datos)
     
         dx = datos.L/datos.Vx;
         dy = datos.H/datos.Vy;

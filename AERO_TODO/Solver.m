@@ -1,4 +1,10 @@
-function [u, v, P, time, errorP] = SolverB(datos, C)
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
+function [u, v, P, time, errorP] = Solver(datos, C)
 
     [u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C);
     

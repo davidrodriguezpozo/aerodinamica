@@ -4,6 +4,13 @@
 %%% NS equation.                                        %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
 function du = diffusion_u(u,L)
 % Inputs: N (size of the x-axis "mesh"), M (size of the y-axis "mesh"),
 % dx and dy are the incrementals; and the Sx components are the Sufaces defined in the faces of the mesh. 

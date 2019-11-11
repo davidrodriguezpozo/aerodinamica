@@ -1,4 +1,10 @@
-    function PlotsB (C,P,Vx,errorP)
+% Code developed by:
+% - Sergi Martinez Castellarnau
+% - Carlos Perez Ricardo
+% - David Rodriguez Pozo
+% - Paula Sorolla Bayod
+
+function PlotsB (C,P,Vx,errorP)
     
     set(groot, 'DefaultTextInterpreter','latex');
     set(groot, 'Defaultaxesticklabelinterpreter','latex');
