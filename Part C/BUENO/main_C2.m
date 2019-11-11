@@ -2,6 +2,7 @@ function main_C
 
 set(groot, 'DefaultTextInterpreter','latex');
 set(groot, 'Defaultaxesticklabelinterpreter','latex');
+set(groot, 'DefaultLegendInterpreter','latex');
 
 clear all 
 clc
@@ -213,6 +214,10 @@ legend('Analytic','Numerical')
 figure; 
 semilogy(acu_time,u_anal); hold on;
 semilogy(acu_time,u_vector);
+legend('Analytic','Numerical');
+posx = num2str(C.stagX_x(3,3));
+posy = num2str(C.stagX_y(3,3));
+title(['Horizontal Velocity at point x =',posx,' and y = ',posy]);
 
 disp('AA');
 figure;
