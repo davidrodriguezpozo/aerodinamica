@@ -1,5 +1,8 @@
 function main_C
 
+set(groot, 'DefaultTextInterpreter','latex');
+set(groot, 'Defaultaxesticklabelinterpreter','latex');
+
 clear all 
 clc
 close all 
@@ -163,6 +166,9 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
         end
     end
     
+    u = haloupdate(u);
+    v = haloupdate(v);
+    
     dif_U = 0;
     dif_V = 0;
     
@@ -204,8 +210,8 @@ semilogy(acu_time,P_vec);
 legend('Analytic','Numerical')
 
 disp('AA');
-
-    contourf(C.Coll_x,C.Coll_y,P,1000,'LineWidth',0.05) ;
+figure;
+    contourf(C.Coll_x,C.Coll_y,P,'LineWidth',0.05) ;
     c = colorbar;
     str = {'Pressure'}; 
     c.Label.String = str;
