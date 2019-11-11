@@ -177,6 +177,16 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     p_analytic = Analytic_Pressure (datos, C);
     
+    rho = datos.rho;
+    mu = datos.mu;
+   
+    index = 1;
+    t_vector(index)=time;
+    u_vector(index)=u(3,3);
+    v_vector(index)=v(3,3);
+    P_anal(index)=-(exp(-8*pi^2*mu/rho*time))^2*(rho*(cos(4*pi*C.Coll_x(3))+cos(4*pi*C.Coll_y(3))))/4;
+    P_vec(index)=P(3,3);
+    
     error = ERROR(P,p_analytic)
 
     [p_gradX p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh, num);

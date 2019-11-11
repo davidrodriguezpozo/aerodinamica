@@ -1,4 +1,4 @@
-function p = Analytic_Pressure (datos, C)
+function p = Analytic_Pressure (datos, C, time)
 % This function ... wh
     for i = 1:datos.Nx
         for j=1:datos.Ny
