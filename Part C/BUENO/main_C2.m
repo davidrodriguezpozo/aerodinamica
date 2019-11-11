@@ -422,7 +422,7 @@ posy = num2str(C.stagX_y(3,3));
 
 title(['Horizontal Velocity at point x =',posx,' and y = ',posy]);
 
- 
+
 
 disp('AA');
 
