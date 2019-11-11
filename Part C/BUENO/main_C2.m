@@ -153,6 +153,7 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     v_vector(index)=v(3,3);
     P_anal(index)=-(exp(-8*pi^2*mu*time))^2*(rho*(cos(4*pi*C.Coll_x(3,3))+cos(4*pi*C.Coll_y(3,3))))/4;
     P_vec(index)=P(3,3);
+    u_anal(index) = datos.F*cos(2*pi*C.stagX_x(3,3))*sin(2*pi*C.stagX_y(3,3));
     
     errorP(index) = abs(P_anal(index) - P_vec(index));
     acu_time (index) = time;
@@ -208,6 +209,10 @@ end
 semilogy(acu_time,P_anal); hold on;
 semilogy(acu_time,P_vec); 
 legend('Analytic','Numerical')
+
+figure; 
+semilogy(acu_time,u_anal); hold on;
+semilogy(acu_time,u_vector);
 
 disp('AA');
 figure;
