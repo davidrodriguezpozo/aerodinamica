@@ -41,69 +41,7 @@ function  C = meshes (datos, malla)
     [ C.stagX_x, C.stagX_y ] = STAGG_MESH_X ( datos, C );
     [ C.stagY_x, C.stagY_y ] = STAGG_MESH_Y ( datos, C );
     
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%
-    %{
-    figure; hold on;
-    plot(C.Coll_x , C.Coll_y,'k.','MarkerSize', 35) ; 
-    plot(C.stagX_x , C.stagX_y,'b.','MarkerSize',20) ;
-    plot(C.stagY_x , C.stagY_y,'g.') ;
-    ylim ([-0.1 1.1])
-    xlim ([-0.1 1.1])
-    %}    
-    %Collocated Mesh
-%{
-    V1x = [C.dx(1) datos.L-C.dx(datos.Nx)];
-    V1y = [C.dy(1) datos.H-C.dy(datos.Ny) ]; 
-    V2x = [ datos.L-C.dx(datos.Nx)   datos.L-C.dx(datos.Nx) ]; 
-    V2y = [ datos.H-C.dy(datos.Ny)   datos.H-C.dy(datos.Ny)];
-    V3x = [C.dx(1) C.dx(1)];
-    V3y = [C.dy(1) C.dy(1)];
    
-    V5 = [C.dx(1)+C.dx(2) C.dx(1)+C.dx(2)];
-    V6 = [C.dy(1) datos.H-C.dy(datos.Ny) ]; 
-    V7 = [C.dx(1)+C.dx(2)+C.dx(3) C.dx(1)+C.dx(2)+C.dx(3)];
-    
-    V8 = [C.dx(1) datos.H-C.dy(datos.Ny) ];
-    V9 = [C.dy(1)+C.dy(2) C.dy(1)+C.dy(2) ]; 
-    V10 = [C.dy(1)+C.dy(2)+C.dy(3) C.dy(1)+C.dy(2)+C.dy(3)];
-    %}
-    %{
-    if malla == 1
-        hold on;
-        plot(V1x,V2y,'k');  plot(V3x,V1y,'k'); plot(V2x,V1y,'k'); plot(V1x,V3y,'k');
-        plot(V5,V6,'-.k'); plot(V7,V6,'-.k');
-        plot(V8,V9,'-.k'); plot(V8,V10,'-.k');
-        title('Collocated mesh'); 
-    end
-    
-    % Staggered Mesh X
-    if malla == 2
-        V1x = V1x - C.dx(1)/2; V3x = V3x - C.dx(1)/2;
-        V2x = V2x - C.dx(1)/2; 
-    
-        plot(V1x,V2y,'b');  plot(V3x,V1y,'b'); plot(V2x,V1y,'b'); plot(V1x,V3y,'b');
-        plot(V5- C.dx(1)/2,V6,'-.b'); plot(V7- C.dx(1)/2,V6,'-.b');
-        plot(V8- C.dx(1)/2,V9,'-.b'); plot(V8- C.dx(1)/2,V10,'-.b');
-        title('Staggered mesh x-direction'); 
-    end
-        
-    % Staggered Mesh Y
-    if malla == 3
-        V1y = V1y - C.dy(1)/2; V3y = V3y - C.dy(1)/2;
-        V2y = V2y - C.dy(1)/2; 
-        
-        plot(V1x,V2y,'g');  plot(V3x,V1y,'g'); plot(V2x,V1y,'g'); plot(V1x,V3y,'g');
-        plot(V5,V6- C.dy(1)/2,'-.g'); plot(V7,V6- C.dy(1)/2,'-.g');
-        plot(V8,V9- C.dy(1)/2,'-.g'); plot(V8,V10- C.dy(1)/2,'-.g');
-        title('Staggered mesh y-direction'); 
-    end
-    
-    fprintf('---> Mallas calculada\n')      
-   %}
-    
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Collocated_mesh function build the collocated mesh with no uniform meshes
 % (computing delta X and delta Y for every type of distribution)
