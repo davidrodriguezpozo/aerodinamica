@@ -1,4 +1,4 @@
-function datos = INPUT(Vx,Vy)
+function datos = INPUT(Vx,Vy,Re)
 
     datos.Nx = Vx+2;
     datos.Ny = Vy+2;
@@ -10,6 +10,7 @@ function datos = INPUT(Vx,Vy)
     datos.H = 1;
     
     datos.malla = 2;
+    datos.mu=1/Re;
     
-    datos.mu = 1.5e-5;
+    datos.mu = 1e-4;
     datos.rho = 1;

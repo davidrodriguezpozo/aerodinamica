@@ -1,35 +1,18 @@
 function main_C
 
-%Es la mateixa funcio que el main pero sense les divisions de VC pel M.M.S.
-
-%{  
-                                El Codi hauria de fer aix? 
-
- 1. Timestep for stability
- 2. u_n_1 i u_n conegudes --> R_n_1 i R_n
- 3. Evaluar u_p = u_n + ?t(3/2 * R_n - 1/2 * R_N_1
-        R = - Conv(u)/V + Diff(u)/V
- 4. Resoldre l'equaci? de Poisson A * pseudo_p = Div(u_p)
- 5. Obtenir pseudo_p
- 6. Obtenir u_n1 --> u_n1 = u_p - grad(pseudo_p) 
- 7. timestep + 1 
- %}
-
 clear all 
 clc
 close all 
 
 
-Vx = 5; %N? de divisions en x de V.C.
-Vy = 5;
+Vx = 10; 
+Vy = 10;
+Re = 1000;
 
-datos = INPUT(Vx,Vy);
+datos = INPUT(Vx,Vy,Re);
 C = meshes (datos, datos.malla);
 
 matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A.
-
-%Perfil de velocitats:
-% PERFIL VELOCITATS
 
 time = 0.00;
 datos.F = exp(-8*pi^2*datos.mu*time);
@@ -63,7 +46,7 @@ datos.mu = 0.010;
 
 time = 0;
 
-final_time = 10;
+final_time = 2;
 
 R_u = zeros(datos.Nx);
 R_v = zeros(datos.Nx);
@@ -95,7 +78,8 @@ dif_U = 1;
 dif_V = 1;
 delta_V = 1e-5;
 
-
+    Nx = datos.Nx;
+    Ny = datos.Ny;
 
 while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
@@ -106,20 +90,36 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     v_prev = v;
     
     %Time for convective term
-    %Tc = min((datos.L/(datos.Nx*max(max(u)))), (datos.H/(datos.Vy*max(max(v)))));
-    Tc = min((datos.L/(datos.Nx*max(max(u)))), (datos.H/(datos.Vy*max(max(v)))));
+    Tc_u = min(datos.L/(datos.Vx*max(max(u))));
+    Tc_v = min(datos.H/(datos.Vy*max(max(v))));
+    Tc = min (Tc_u,Tc_v)
     %Time for diffusive term
-    Td = 0.5*(datos.L/datos.Nx)*(datos.H/datos.Ny) / nu;
-
-    %Step time:
-    delta_T =0.4 * min(Tc,Td);
+    Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
     
-    delta_T = 0.0421; %per 5
+    %Step time:
+    delta_T =0.2 * min(Tc,Td);
+    
+    %delta_T = 0.0421; %per 5
     
     time = time + delta_T;
     
-    time = 0.02;
     datos.F = exp(-8*pi^2*datos.mu*time);
+    
+    for i = 1:datos.Nx
+        for j = 1:datos.Ny
+        
+        x1 = C.stagX_x(i,j);
+        y1 = C.stagX_y(i,j);
+        
+        u(i,j) = datos.F*cos(2*pi*x1)*sin(2*pi*y1);
+        
+        x2 = C.stagY_x(i,j);
+        y2 = C.stagY_y(i,j);
+        
+        v(i,j) = -datos.F*cos(2*pi*y2)*sin(2*pi*x2);
+        
+        end
+    end
     
     %Calculem R: R = - Conv(u)/V + Diff(u)/V
     [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v);
@@ -139,9 +139,6 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     u_p = haloupdate(u_p);
     v_p = haloupdate(v_p);
-        
-    Nx = datos.Nx;
-    Ny = datos.Ny;
     
     dx = datos.L/datos.Vx;
     dy = datos.H/datos.Vy;
@@ -168,15 +165,12 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     [nodal_mesh num] = nodalmesh(Nx,Ny);
     
-    [nodal_mesh num] = nodalmesh(Nx,Ny);
-    
     div_u_p = divergencia_u(datos, u_p, v_p, nodal_mesh, num);
     
     pseudo_p = zeros(Nx*Nx,1); 
 
     matriu_A(1,1)=-5;
-    
-    %pseudo_p = inv(matriu_A)*u_p;
+
     pseudo_p = inv(matriu_A)*div_u_p;
     
     rho = 1;
