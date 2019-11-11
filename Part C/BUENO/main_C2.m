@@ -224,7 +224,7 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
         %Time for convective term
     Tc_u = min(datos.L/(datos.Vx*max(max(u))));
     Tc_v = min(datos.H/(datos.Vy*max(max(v))));
-    Tc = min (Tc_u,Tc_v)
+    Tc = min (Tc_u,Tc_v);
     %Time for diffusive term
     Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
     
@@ -241,7 +241,7 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
 
-    sum(divvvvvv)
+    sum(divvvvvv);
     
     
 
