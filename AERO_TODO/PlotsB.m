@@ -1,8 +1,11 @@
     function PlotsB (C,P,Vx,errorP)
     
+    set(groot, 'DefaultTextInterpreter','latex');
+    set(groot, 'Defaultaxesticklabelinterpreter','latex');
+    
     figure; 
     loglog(1./Vx,errorP,'o-');
-    title('Pressure vs. mesh size','Fontsize',16);
+    title('Pressure vs. mesh size','Fontsize',18);
     xlabel('Size of the mesh h');
     ylabel('Error pressure');
 

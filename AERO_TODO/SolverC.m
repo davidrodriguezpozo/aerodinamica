@@ -1,3 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%           FUNCTION SolverC        %%%%%%%%%%%%%
+%%%   This function allows enables the programmer to    %%%
+%%%   obtain the pressure field solution and velocity   %%%
+%%%   field for each instant of time until a stabilty   %%%
+%%%   is achieved or when final time is reached.        %%%
+%%%   The program also computes the numerical and       %%% 
+%%%   analytical value of a point in the domain.        %%%
+%%%   Notice that this program is running along time.   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [u v P P_an P_num u_an u_num v_an v_num acu_time] =  SolverC(datos, C, ii, jj)
 
 [u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C);

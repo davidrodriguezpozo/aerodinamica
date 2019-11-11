@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%           FUNCTION SolverB        %%%%%%%%%%%%%
+%%% This function allows enables the programmer to      %%%
+%%%   obtain the pressure field solution for a given    %%%
+%%% velocity field for different sizes of the mesh Vx.  %%%
+%%% As well as the maximum error for this mesh of       %%%
+%%%                   discretization.                   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [u, v, P, time, errorP] = SolverB(datos, C)
 
     [u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C);

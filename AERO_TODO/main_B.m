@@ -1,14 +1,11 @@
 function main_B
 
-    %set(groot, 'DefaultTextInterpreter','latex');
-    %set(groot, 'Defaultaxesticklabelinterpreter','latex');
-
     clear all 
     clc
     close all 
 
-    Vx = [3 5 10 20 30 50]; 
-    Vy = [3 5 10 20 30 50]; 
+    Vx = [3 5 10 20 30 40]; 
+    Vy = [3 5 10 20 30 40]; 
     Re = 1000;
     
     for i=1:length(Vx)
