@@ -76,7 +76,7 @@ P_prev = zeros(datos.Nx);
 dif_P = 1;
 dif_U = 1;
 dif_V = 1;
-delta_V = 1e-5;
+delta_V = 1e-7;
 
 Nx = datos.Nx;
 Ny = datos.Ny;
@@ -95,35 +95,19 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     u_prev = u;
     v_prev = v;
     
-    for i = 1:datos.Nx
-        for j = 1:datos.Ny
-        
-        x1 = C.stagX_x(i,j);
-        y1 = C.stagX_y(i,j);
-        
-        u(i,j) = datos.F*cos(2*pi*x1)*sin(2*pi*y1);
-        
-        x2 = C.stagY_x(i,j);
-        y2 = C.stagY_y(i,j);
-        
-        v(i,j) = -datos.F*cos(2*pi*y2)*sin(2*pi*x2);
-        
-        end
-    end
+    %datos.F = exp(-4*pi*datos.mu/datos.rho*time);
     
-    %Calculem R: R = - Conv(u)/V + Diff(u)/V
     [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v);
     
+    %Calculem R: R = - Conv(u)/V + Diff(u)/V
     Vol = (datos.L/datos.Vx)*(datos.H/datos.Vy);
     R_u = -(conv_u/Vol) + datos.mu*(diff_u/Vol);
     R_v = -(conv_v/Vol) + datos.mu*(diff_v/Vol);
     
     for i = 2:datos.Nx-1
         for j = 2:datos.Ny-1
-    
         u_p(i,j) = u(i,j) + delta_T*(3/2*R_u(i,j) - 1/2*R_u_prev(i,j));
         v_p(i,j) = v(i,j) + delta_T*(3/2*R_v(i,j) - 1/2*R_v_prev(i,j));
-    
         end
     end
     
@@ -133,6 +117,8 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     dx = datos.L/datos.Vx;
     dy = datos.H/datos.Vy;
     
+    %delta_T = 0.02;
+    
     rho = 1;
     
     for i=2:Nx-1
@@ -141,42 +127,17 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
             aw(i,j) = dy/dx;
             an(i,j) = dx/dy;
             as(i,j) = dx/dy; 
-            bp(i,j)=-1/delta_T*(rho*u_p(i,j)*(dy)-rho*u_p(i,j-1)*(dy)+rho*v_p(i,j)*(dx)-rho*v_p(i-1,j)*(dx));
+            bp(i,j)=-1/delta_T*rho*(u_p(i,j)*(dy)-u_p(i,j-1)*(dy)+v_p(i,j)*(dx)-v_p(i-1,j)*(dx));
             
         end
     end
     
     ap = ae + aw + an + as;
-    
+   
     
     [P P_prev dif_P] = SolverP (ae, aw, an, as, ap, bp, P_prev, P, dif_P, datos);
     
     P = haloupdate(P);
-    
-    [nodal_mesh num] = nodalmesh(Nx,Ny);
-    
-    div_u_p = divergencia_u(datos, u_p, v_p, nodal_mesh, num);
-    
-    pseudo_p = zeros(Nx*Nx,1); 
-
-    matriu_A(1,1)=-5;
-
-    pseudo_p = inv(matriu_A)*div_u_p;
-    
-    rho = 1;
-    
-    %p = pseudo_p * delta_T / rho; 
-    
-    k = 1; t = 1;
-    for i=1:size(p,1)
-        if k <= datos.Nx
-            p_mat(k,t) = p(i);
-            k = k+1;
-        else
-            k = 1; t = t+1;
-            p_mat(k,t) = p(i);
-        end
-    end
     
     p_analytic = Analytic_Pressure (datos, C);
     
@@ -187,14 +148,11 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     t_vector(index)=time;
     u_vector(index)=u(3,3);
     v_vector(index)=v(3,3);
-    P_anal(index)=-(exp(-8*pi^2*mu/rho*time))^2*(rho*(cos(4*pi*C.Coll_x(3,3))+cos(4*pi*C.Coll_y(3,3))))/4;
+    P_anal(index)=-(exp(-8*pi^2*mu*time))^2*(rho*(cos(4*pi*C.Coll_x(3,3))+cos(4*pi*C.Coll_y(3,3))))/4;
     P_vec(index)=P(3,3);
     
-    %error = P(3,3) - P_anal(index);
-    %error = P(3,3) - P_anal(index);
-    %error = ERROR(P,p_analytic)
-
-    [p_gradX p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh, num);
+    errorP(index) = abs(P_anal(index) - P_vec(index));
+    acu_time (index) = time;
     
     for i=2:Nx-1
         for j=2:Nx-1
@@ -204,9 +162,6 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
  
         end
     end
-     
-    u_n1 = u - p_gradX;
-    v_n1 = v - p_gradY;
     
     dif_U = 0;
     dif_V = 0;
@@ -232,6 +187,7 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     %Step time:
     delta_T =0.2 * min(Tc,Td);
+    delta_T =0.02 ;
     
     %delta_T = 0.0421; %per 5
     
@@ -239,17 +195,24 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
     datos.F = exp(-8*pi^2*datos.mu*time);
     
-    %% UPDATE OF VELOCITY FIELD
-    
-    divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
-
-    sum(divvvvvv);
-    
-    
 
 end
 
+% 
+semilogy(acu_time,P_anal); hold on;
+semilogy(acu_time,P_vec); 
+legend('Analytic','Numerical')
+
 disp('AA');
+
+    contourf(C.Coll_x,C.Coll_y,P,1000,'LineWidth',0.05) ;
+    c = colorbar;
+    str = {'Pressure'}; 
+    c.Label.String = str;
+    c.Label.FontSize = 14;
+    xlabel('X-axis');
+    ylabel('Y-axis');
+    title('Pressure','Fontsize',16)
 
 
 
