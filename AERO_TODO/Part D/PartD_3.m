@@ -8,7 +8,7 @@
 
 % Execute function main 
 
-function main
+function PartD_3
 
 clear all
 clc

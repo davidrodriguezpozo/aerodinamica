@@ -4,7 +4,7 @@
 % - David Rodriguez Pozo
 % - Paula Sorolla Bayod
 
-function main_A
+function PartA_3
 
 %set(groot, 'DefaultTextInterpreter','latex');
 %set(groot, 'Defaultaxesticklabelinterpreter','latex');
