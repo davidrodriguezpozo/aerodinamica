@@ -2,32 +2,38 @@ clear all
 clc
 close all
 
-Directory1 = 'NACA_2412_N_512.txt';
-Directory2 = 'NACA_2412_N_256.txt';
-Directory3 = 'NACA_2412_N_128.txt';
-Directory4 = 'NACA_2412_N_64.txt';
-Directory5 = 'NACA_2412_N_32.txt';
-Directory6 = 'NACA_2412_N_16.txt';
+Directory = 'NACA_2412_N_512.txt';
+AirFoil512.Wing = importdata(Directory);
+Directory = 'NACA_2412_N_256.txt';
+AirFoil256.Wing = importdata(Directory);
+Directory = 'NACA_2412_N_128.txt';
+AirFoil128.Wing = importdata(Directory);
+Directory = 'NACA_2412_N_64.txt';
+AirFoil64.Wing = importdata(Directory);
+Directory = 'NACA_2412_N_32.txt';
+AirFoil32.Wing = importdata(Directory);
+Directory = 'NACA_2412_N_16.txt';
+AirFoil16.Wing = importdata(Directory);
 
-AirFoil.Wing_512 = importdata(Directory1);
-AirFoil.Wing_256 = importdata(Directory2);
-AirFoil.Wing_128 = importdata(Directory3);
-AirFoil.Wing_64 = importdata(Directory4);
-AirFoil.Wing_32 = importdata(Directory5);
-AirFoil.Wing_16 = importdata(Directory6);
 
-Directory1 = 'NACA_0009_N_512.txt';
-Directory2 = 'NACA_0009_N_256.txt';
-Directory3 = 'NACA_0009_N_128.txt';
-Directory4 = 'NACA_0009_N_64.txt';
-Directory5 = 'NACA_0009_N_32.txt';
-Directory6 = 'NACA_0009_N_16.txt';
+Directory = 'NACA_0009_N_512.txt';
+AirFoil512.Tail = importdata(Directory);
+Directory = 'NACA_0009_N_256.txt';
+AirFoil256.Tail = importdata(Directory);
+Directory = 'NACA_0009_N_128.txt';
+AirFoil128.Tail = importdata(Directory);
+Directory = 'NACA_0009_N_64.txt';
+AirFoil64.Tail = importdata(Directory);
+Directory = 'NACA_0009_N_32.txt';
+AirFoil32.Tail = importdata(Directory);
+Directory = 'NACA_0009_N_16.txt';
+AirFoil16.Tail = importdata(Directory);
 
-AirFoil.Tail_512 = importdata(Directory1);
-AirFoil.Tail_256 = importdata(Directory2);
-AirFoil.Tail_128 = importdata(Directory3);
-AirFoil.Tail_64 = importdata(Directory4);
-AirFoil.Tail_32 = importdata(Directory5);
-AirFoil.Tail_16 = importdata(Directory6);
+clear Directory
 
-save('AirFoil');
+save('AirFoil16');
+save('AirFoil32');
+save('AirFoil64');
+save('AirFoil128');
+save('AirFoil256');
+save('AirFoil512');
