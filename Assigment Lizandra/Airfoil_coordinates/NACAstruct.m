@@ -2,38 +2,63 @@ clear all
 clc
 close all
 
-Directory = 'NACA_2412_N_512.txt';
+A = 512;
+
+Directory = sprintf('NACA_2412_N_%d.txt',A);
 AirFoil512.Wing = importdata(Directory);
-Directory = 'NACA_2412_N_256.txt';
-AirFoil256.Wing = importdata(Directory);
-Directory = 'NACA_2412_N_128.txt';
-AirFoil128.Wing = importdata(Directory);
-Directory = 'NACA_2412_N_64.txt';
-AirFoil64.Wing = importdata(Directory);
-Directory = 'NACA_2412_N_32.txt';
-AirFoil32.Wing = importdata(Directory);
-Directory = 'NACA_2412_N_16.txt';
-AirFoil16.Wing = importdata(Directory);
-
-
-Directory = 'NACA_0009_N_512.txt';
+Directory = sprintf('NACA_0009_N_%d.txt',A);
 AirFoil512.Tail = importdata(Directory);
-Directory = 'NACA_0009_N_256.txt';
-AirFoil256.Tail = importdata(Directory);
-Directory = 'NACA_0009_N_128.txt';
-AirFoil128.Tail = importdata(Directory);
-Directory = 'NACA_0009_N_64.txt';
-AirFoil64.Tail = importdata(Directory);
-Directory = 'NACA_0009_N_32.txt';
-AirFoil32.Tail = importdata(Directory);
-Directory = 'NACA_0009_N_16.txt';
-AirFoil16.Tail = importdata(Directory);
-
 clear Directory
-
-save('AirFoil16');
-save('AirFoil32');
-save('AirFoil64');
-save('AirFoil128');
-save('AirFoil256');
 save('AirFoil512');
+clear all
+
+A = 256;
+
+Directory = sprintf('NACA_2412_N_%d.txt',A);
+AirFoil256.Wing = importdata(Directory);
+Directory = sprintf('NACA_0009_N_%d.txt',A);
+AirFoil256.Tail = importdata(Directory);
+clear Directory
+save('AirFoil256');
+clear all
+
+A = 128;
+
+Directory = sprintf('NACA_2412_N_%d.txt',A);
+AirFoil128.Wing = importdata(Directory);
+Directory = sprintf('NACA_0009_N_%d.txt',A);
+AirFoil128.Tail = importdata(Directory);
+clear Directory
+save('AirFoil128');
+clear all
+
+A = 64;
+
+Directory = sprintf('NACA_2412_N_%d.txt',A);
+AirFoil64.Wing = importdata(Directory);
+Directory = sprintf('NACA_0009_N_%d.txt',A);
+AirFoil64.Tail = importdata(Directory);
+clear Directory
+save('AirFoil64');
+clear all
+
+A = 32;
+
+Directory = sprintf('NACA_2412_N_%d.txt',A);
+AirFoil32.Wing = importdata(Directory);
+Directory = sprintf('NACA_0009_N_%d.txt',A);
+AirFoil32.Tail = importdata(Directory);
+clear Directory
+save('AirFoil32');
+clear all
+
+A = 16;
+
+Directory = sprintf('NACA_2412_N_%d.txt',A);
+AirFoil16.Wing = importdata(Directory);
+Directory = sprintf('NACA_0009_N_%d.txt',A);
+AirFoil16.Tail = importdata(Directory);
+clear Directory 
+save('AirFoil16');
+clear all
+
