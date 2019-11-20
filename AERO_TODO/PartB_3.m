@@ -1,6 +1,6 @@
 
 
-function main_B
+function PartB_3
 
     clear all 
     clc
