@@ -74,8 +74,9 @@ N_w = size(X_w,1)-1;
 for i = 1:length(alpha_w_vec)
     alpha_w = alpha_w_vec(i);
     alpha_ef_w = alpha_w;
-    c_w = 1;
-
+    c_w = 1.2; %Cambio
+    % c_w = 1;
+    
 % Process
 [cl_w, cl_alpha_w, c_m_14_w] = ...
 compute_coefficients (alpha_ef_w, N_w, X_w, rho, c_w)
