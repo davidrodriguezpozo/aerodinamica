@@ -6,6 +6,7 @@ run ('AirfoilData.m')
 
 alpha_w_vec = deg2rad([-3 0 3 6]);
 divs = [16 32 64 128 256 512];
+%divs = [256 512];
 
 %X_w = importdata ('NACA_2412_N_512.txt');
 
@@ -39,8 +40,8 @@ for i=1:length(divs)
     
 end
 
-%figure;
-%semilogx (divs,cl_w_vec);
+figure;
+plot (divs,cl_w_vec);
 
 figure;
 error1 = abs(cl_w_vec(:,1)-cl_w_vec(end,1));
@@ -55,7 +56,7 @@ semilogx (divs,error4);
 %plot (divs,error2); 
 %plot (divs,error3); 
 %plot (divs,error4); 
-ylim([min(error1)-0.05 max(error1)+0.05])
+%ylim([min(error1)-0.05 max(error1)+0.05])
 
 title('Error c_l for different AoA');
 

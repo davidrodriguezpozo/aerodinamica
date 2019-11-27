@@ -1,4 +1,5 @@
 function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c)
+    
     ca = cos(alpha_ef); sa = sin(alpha_ef);
     [Xc, n, t] = control_points (X,N);
     
@@ -35,7 +36,7 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
             
             % Change the velocity back to global coordinates
             u_i = u_i_pan_j * ca_j + w_i_pan_j * sa_j;
-            w_i =-u_i_pan_j * sa_j + w_i_pan_j * ca_j;
+            w_i = - u_i_pan_j * sa_j + w_i_pan_j * ca_j;
             V_i = [u_i; w_i];
             
             % Compute the influence ceofficients a_ij
@@ -45,7 +46,7 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
         c_m0 (i,1) = 0;
     end
     for i=1:N
-        a(i,i) = .5;
+        a(i,i) = -.5; % CAMBIO a negativo
     end
     
     % Kutta condition
@@ -53,10 +54,13 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
     a(i,:) = 0; b(i,1) = 0;
     a(i,1) = 1; a(i,N) = 1;
     
-    gamma = a\b;
+    %gamma = a\b;
+    gamma = inv(a)\b; %Cambio 
     
     L = rho * Q_inf(1) * sum(gamma.*l);
-    c_l = L / (.5 * Q_inf(1)^2 * rho *c);
+    %c_l =  L / (.5 * Q_inf(1)^2 * rho *c);
+    U_inf = 1;
+    c_l = 2*sum(gamma.*l)/(U_inf*c);
     
     c_l_alpha = 0;
     c_m_14 = 0;
