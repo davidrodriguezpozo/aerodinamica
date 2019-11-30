@@ -48,6 +48,7 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
         c_m0 (i,1) = 0;
     end
     for i=1:N
+        a(i,i) = .5; % victor
         a(i,i) = -.5; % CAMBIO a negativo
     end
     

@@ -57,4 +57,4 @@ function PartA_3
     
     end
     
-    PlotsA (Vx,error_du,error_dv,error_cu,error_cv);
+    plotsA (Vx,error_du,error_dv,error_cu,error_cv);

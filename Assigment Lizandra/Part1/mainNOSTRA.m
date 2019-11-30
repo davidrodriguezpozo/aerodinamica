@@ -8,25 +8,34 @@ run ('AirfoilData.m')
 alpha_w_vec = deg2rad([-3 0 3 6]);
 divs = [16 32 64 128 256 512];
 
+for i = 1:length(divs)
 
-X = Geometry(divs(6),'wing');
-alpha_w = alpha_w_vec(3);
+    X = Geometry(divs(i),'wing');
+    alpha_w = alpha_w_vec(4);
 
-X = X (:,2:3);
-N = size(X,1)-1;
+    X = X (:,2:3);
+    N = size(X,1)-1;
 
-alpha_ef = alpha_w;
-c = 1;
+    alpha_ef = alpha_w;
+    c = 1;
 
-% Process
-[cl, cl_alpha, c_m_14] = Coefficients (alpha_ef, N, X, rho, c);
+    % Process
+    [cl, cl_alpha, c_m_14] = Coefficients (alpha_ef, N, X, rho, c);
+
+    cl_vec(i) = cl;
+end
+
+plot(divs,cl_vec);
 
 end
 
 
 function [cl, cl_alpha, cm_14] = Coefficients (alpha_ef, N, X, rho, c)
-    ca = cos(alpha_ef); sa = sin(alpha_ef);
-    [Xc, n, t] = control_points (X,N);
+    
+    ca = cos(alpha_ef); 
+    sa = sin(alpha_ef);
+    
+    %[Xc, n, t] = control_points (X,N);
     
     for i=1:N
         x1 = X(i,1); x2 = X(i+1,1);
@@ -34,21 +43,21 @@ function [cl, cl_alpha, cm_14] = Coefficients (alpha_ef, N, X, rho, c)
         li = sqrt((x1-x2)^2+(z1-z2)^2);
         
         %[sa ca] = compute_angles (x1,x2,z1,z2);
-        %sa = (z2-z1) / (li); 
+        %si = (z2-z1) / (li); 
         % Cambio sa
         si = (z1-z2) / (li); 
         ci = (x2-x1) / (li);
         
-        %Xc(i,1) = x1 + .5*li*ca; % Mid point
-        %Xc(i,2) = z1 + .5*li*sa; % Mid point
+        Xc(i,1) = x1 + .5*li*ci; % Mid point
+        Xc(i,2) = z1 + .5*li*si; % Mid point
         
-        Xc(i,1) = (x2 + x1)/2; % Cambio
-        Xc(i,2) = (z2 + z1)/2; % Cambio
+        %Xc(i,1) = (x1 + x2)/2; % Cambio
+        %Xc(i,2) = (z1 + z2)/2; % Cambio
         
         n(i,1) = si; n(i,2) = ci;
         t(i,1) = ci; t(i,2) = -si;
     end
-    
+
 %     plot (X(:,1),X(:,2))
 %     hold on
 % 
@@ -59,23 +68,21 @@ function [cl, cl_alpha, cm_14] = Coefficients (alpha_ef, N, X, rho, c)
     %Q_inf = 1/2*U_inf^2*rho*[ca sa]; %cambio
     Q_inf = [ca sa];
     
-    
-    
     for i=1:N
         b(i,1) = -Q_inf * t(i,:)';
         for j=1:N
             % Compute the angle of the planes j
             x_j1 = X(j,1);      z_j1 = X(j,2);
-            x_j2 = X(j+1);      z_j2 = X(j+1,2);
+            x_j2 = X(j+1,2);      z_j2 = X(j+1,2);
             %[sa_j, ca_j, lj] = compute_angles(x_j1,x_j2,z_j1,z_j2);
             
-            x1 = X(i,1); x2 = X(i+1,1);
-            z1 = X(i,2); z2 = X(i+1,2);
+            %x1 = X(j,1); x2 = X(j+1,1);
+            %z1 = X(j,2); z2 = X(j+1,2);
             
-            sa_j = (z1-z2) / (li); 
-            ca_j = (x2-x1) / (li);
+            sa_j = (z_j1-z_j2) / (li); 
+            ca_j = (x_j2-x_j1) / (li);
 
-            lj = sqrt((x1-x2)^2+(z1-z2)^2);
+            lj = sqrt((x_j1-x_j2)^2+(z_j1-z_j2)^2);
             
             l(j,1) = lj;
             
@@ -87,24 +94,27 @@ function [cl, cl_alpha, cm_14] = Coefficients (alpha_ef, N, X, rho, c)
             % Induced velocity at "i"
             %[r_1, r_2, theta_1, theta_2] = compute_r_theta (X,Xc,i,j);
             
-            x_cp_i = Xc(i,1);   z_cp_i = Xc(i,2);
-            x_j1 = X(j,1);      z_j1 = X(j,2);
-            x_j2 = X(j+1,1);      z_j2 = X(j+1,2);
+            x_cp_i = Xc(i,1);  z_cp_i = Xc(i,2);
+            x_j1 = X(j,1);     z_j1 = X(j,2);
+            x_j2 = X(j+1,1);   z_j2 = X(j+1,2);
 
             r_1 = sqrt((x_j1-x_cp_i)^2 + (z_j1 - z_cp_i)^2);
             r_2 = sqrt((x_j2-x_cp_i)^2 + (z_j2 - z_cp_i)^2);
-            %theta_1 = asin((z_cp_i - z_j1) / (r_1));
-            %theta_2 = asin((z_cp_i - z_j2) / (r_2));
+            theta_1 = asin((z_cp_i - z_j1) / (r_1));
+            theta_2 = asin((z_cp_i - z_j2) / (r_2));
 
-            theta_1 = atan((z_j1 - z_cp_i) / (x_j1 - x_cp_i)); %Carlos
-            theta_2 = atan((z_j2 - z_cp_i) / (x_j2 - x_cp_i)); %Carlos
+            %theta_1 = atan((z_j1 - z_cp_i) / (x_j1 - x_cp_i)); %Carlos
+            %theta_2 = atan((z_j2 - z_cp_i) / (x_j2 - x_cp_i)); %Carlos
             
             u_i_pan_j = (theta_2 - theta_1) / (2*pi);
             w_i_pan_j = log((r_2)^2 / (r_1)^2) / (4*pi);
             
             % Change the velocity back to global coordinates
-            u_i = u_i_pan_j * ca_j + w_i_pan_j * sa_j;
-            w_i = - u_i_pan_j * sa_j + w_i_pan_j * ca_j;
+            %u_i = u_i_pan_j * ca_j + w_i_pan_j * sa_j;
+            %w_i = - u_i_pan_j * sa_j + w_i_pan_j * ca_j;
+            V_i = [u_i_pan_j w_i_pan_j]*[ca_j sa_j]';
+            u_i = V_i(1);
+            v_i = V_i(2);
             V_i = [u_i; w_i];
             
             % Compute the influence ceofficients a_ij
@@ -114,7 +124,7 @@ function [cl, cl_alpha, cm_14] = Coefficients (alpha_ef, N, X, rho, c)
         c_m0 (i,1) = 0;
     end
     for i=1:N
-        a(i,i) = -.5; % CAMBIO a negativo
+        a(i,i) = -0.5; % CAMBIO a negativo
     end
     
     % Kutta condition
