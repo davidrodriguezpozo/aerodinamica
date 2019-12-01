@@ -1,13 +1,6 @@
-function [r_1 r_2 theta_1 theta_2] = compute_r_theta (X,Xc,i,j);
-        x_cp_i = Xc(i,1);   z_cp_i = Xc(i,2);
-        x_j1 = X(j,1);      z_j1 = X(j,2);
-        x_j2 = X(j+1,1);      z_j2 = X(j+1,2);
-
-        r_1 = sqrt((x_j1-x_cp_i)^2 + (z_j1 - z_cp_i)^2);
-        r_2 = sqrt((x_j2-x_cp_i)^2 + (z_j2 - z_cp_i)^2);
-        %theta_1 = asin((z_cp_i - z_j1) / (r_1));
-        %theta_2 = asin((z_cp_i - z_j2) / (r_2));
-
-        theta_1 = atan((z_j1 - z_cp_i) / (x_j1 - x_cp_i));
-        theta_2 = atan((z_j2 - z_cp_i) / (x_j2 - x_cp_i));
+function [r22_r12, theta_1, theta_2] = compute_r_theta (x,z,l);
+        r22_r12 = ((x-l)^2+z^2)/(x^2+z^2);
+        theta_1 = atan(z/x);
+        theta_2 = atan(z/(x-l));
+        
 end

@@ -1,4 +1,5 @@
 function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c)
+    
     ca = cos(alpha_ef); sa = sin(alpha_ef);
     [Xc, n, t] = control_points (X,N);
     
@@ -8,6 +9,8 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
 %     plot (Xc(:,1),Xc(:,2),'*')
 %     plot (X(:,1),X(:,2),'o')
 
+    U_inf = 1;
+    %Q_inf = 1/2*U_inf^2*rho*[ca sa]; %cambio
     Q_inf = [ca sa];
     
     
@@ -24,8 +27,8 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
             
             % Local coordinates of control points "i" in the local frame of
             % panel "j"
-            x_ci_pan_j = (Xc(i,1)-X(j,1))*ca_j - (Xc(i,2)-X(j,2))*sa_j;
-            z_ci_pan_j = (Xc(i,1)-X(j,1))*sa_j + (Xc(i,2)-X(j,2))*ca_j;
+            x_ci_pan_j = (Xc(i,1)-X(j,1)) * ca_j - (Xc(i,2)-X(j,2)) * sa_j;
+            z_ci_pan_j = (Xc(i,1)-X(j,1)) * sa_j + (Xc(i,2)-X(j,2)) * ca_j;
             
             % Induced velocity at "i"
             [r_1, r_2, theta_1, theta_2] = compute_r_theta (X,Xc,i,j);
@@ -35,7 +38,7 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
             
             % Change the velocity back to global coordinates
             u_i = u_i_pan_j * ca_j + w_i_pan_j * sa_j;
-            w_i =-u_i_pan_j * sa_j + w_i_pan_j * ca_j;
+            w_i = - u_i_pan_j * sa_j + w_i_pan_j * ca_j;
             V_i = [u_i; w_i];
             
             % Compute the influence ceofficients a_ij
@@ -45,7 +48,8 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
         c_m0 (i,1) = 0;
     end
     for i=1:N
-        a(i,i) = -.5;
+        a(i,i) = .5; % victor
+        a(i,i) = -.5; % CAMBIO a negativo
     end
     
     % Kutta condition
@@ -54,9 +58,12 @@ function [c_l, c_l_alpha, c_m_14] = compute_coefficients (alpha_ef, N, X, rho, c
     a(i,1) = 1; a(i,N) = 1;
     
     gamma = a\b;
+    %gamma = inv(a)\b; 
     
     L = rho * Q_inf(1) * sum(gamma.*l);
-    c_l = L / (.5 * Q_inf(1)^2 * rho *c);
+    c_l =  L / (.5 * Q_inf(1)^2 * rho *c);
+    %U_inf = 1; %Carlos
+    %c_l = 2*sum(gamma.*l)/(U_inf*c); %Carlos
     
     c_l_alpha = 0;
     c_m_14 = 0;
