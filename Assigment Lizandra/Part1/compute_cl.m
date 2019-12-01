@@ -1,4 +1,4 @@
-function [c_l] = compute_cl (alpha_ef, N, X, rho, c)
+function [c_l, Vi, Cp, cmo] = compute_cl (alpha_ef, N, X, rho, c)
     ca = cos(alpha_ef); sa = sin(alpha_ef);
     [Xc, n, t] = control_points (X,N);
 
@@ -48,5 +48,37 @@ function [c_l] = compute_cl (alpha_ef, N, X, rho, c)
     
     L = rho * Q_inf(1) * sum(gamma.*l);
     c_l = L / (.5 * Q_inf(1)^2 * rho *c);
+    
+    %% More coefficients
+    
+    for i = 1:N
+        for j = 1:N
+            Vind(j,:) = 1/2 * t(i,:);
+            B(j,:) = gamma(j,:)'*Vind(j,:);
+        end
+        
+        Vi(i,1) = Q_inf(1) + sum(B(:,1));
+        Vi(i,2) = Q_inf(2) + sum(B(:,2));
+    end
+    
+    % Pressure
+    
+    for i = 1:N
+        modVi = sqrt(Vi(i,1)^2 + Vi(i,2)^2);
+        modQinf = sqrt(Q_inf(1)^2 + Q_inf(2)^2);
+        Cp(i) = 1 - ( modVi / modQinf )^2;
+    end
+    
+    % Moment coeff. Leading Edge (com passem a 1/4??)
+    
+    for i = 1:N
+        dxi = X(i+1,1) - X(i,1);
+        dzi = X(i+1,2) - X(i,2);
+        acu = Cp(i)*( Xc(i,1)*dxi  + Xc(i,2)*dzi  ) / (c^2);
+    end
+    
+    cmo = sum(acu)
+    
+    
     
 end

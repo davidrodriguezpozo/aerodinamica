@@ -27,7 +27,7 @@ for i = 1:length(alpha_airfoil_w_vec)
     c_w = 1;
 
 % Process
-[cl_airfoil_w] = compute_cl (alpha_ef_airfoil_w, N_airfoil_w, X_airfoil_w, rho, c_w)
+[cl_airfoil_w, Vi, Cp, cmo] = compute_cl (alpha_ef_airfoil_w, N_airfoil_w, X_airfoil_w, rho, c_w)
 cl_airfoil_w_vec (i) = cl_airfoil_w;
 
 end
@@ -38,8 +38,6 @@ end
 cl_alpha_w = mean (cl_alpha_w_vec)
 
 plot (rad2deg(alpha_airfoil_w_vec),cl_airfoil_w_vec,'-*')
-
--1.4389e-15 
 
 
     
