@@ -28,7 +28,7 @@ close all
 
 % Starting of the iteration
 div = [3 5 10 20 30 40 50 60 70 80 90 100];
-
+div = [10 20 30 40 50 100 200 300 500];
 for k = 1:length(div)
 % Defining the meshes dimensions    
 Nx_vector(k) = div(k); 

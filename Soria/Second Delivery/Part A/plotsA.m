@@ -12,7 +12,7 @@ loglog(1./Nx_vector,0.5*(error_cv+error_cu),'ko-');
 % xlim([1/Nx_vector(1)-0.1 1/Nx_vector(length(Nx_vector))+1]);
 % ylim([min(quad)-0.5 max(error_du)+1]);
 legend('$h^2$','Diffusive term','Convective term','Interpreter','latex');
-title('Diffusive and convefctire terms error vs. mesh size','Fontsize',16);
+title('Diffusive and convective terms error vs. mesh size','Fontsize',16);
 xlabel('Size of the mesh h');
 ylabel('Error');
 
