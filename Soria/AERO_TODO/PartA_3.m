@@ -45,7 +45,7 @@ function PartA_3
     u = haloupdate(u);
     v = haloupdate(v);
     
-    [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v);
+    [conv_u, diff_u, conv_v, diff_v] = Numerical (datos, C, u, v);
     
     [conv_u_analytic diff_u_analytic] = Analytic (datos, C, 'x');
     [conv_v_analytic diff_v_analytic] = Analytic (datos, C, 'y');
