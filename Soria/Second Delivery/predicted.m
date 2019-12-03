@@ -8,7 +8,7 @@ v_p = zeros(Vx+2,Vy+2);
 for i=2:Vx+1
     for j=2:Vy+1
 
-    R_u(i,j) = (- conv_u(i,j) + diff_u(i,j))/Vol;
+    R_u(i,j) = (-conv_u(i,j) + diff_u(i,j))/Vol;
     R_v(i,j) = (-conv_v(i,j) + diff_v(i,j))/Vol;
     u_p(i,j) = u(i,j)+delta_t*(3/2*R_u(i,j)+1/2*R_uant(i,j));
     v_p(i,j) = v(i,j)+delta_t*(3/2*R_v(i,j)+1/2*R_vant(i,j));

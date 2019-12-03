@@ -37,11 +37,12 @@ C = meshes (datos, datos.malla);
 v = zeros(datos.Nx,datos.Ny);
 u = zeros(datos.Nx,datos.Ny);
 u(3,3) = 1; % El camp de velocitats té HALO
+v(3,3) = 1;
 u = haloupdate(u);
 %[nodal_mesh num] = nodalmesh(Vx,Vy)
 [nodal_mesh, num] = nodalmesh(Vx,Vy);
 %delta_t = TimeStep(u,v);
-delta_t = 0.02;
+delta_t = 0.3;
 
 [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v);
 
