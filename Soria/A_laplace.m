@@ -3,7 +3,7 @@ function A = A_laplace(datos,C)
 Vx = datos.Vx;
 Vy = datos.Vy;
 
-[nodal_mesh num] = nodalmesh(Vx,Vy);
+[nodal_mesh, num] = nodalmesh(Vx,Vy);
 
 
    

@@ -23,47 +23,42 @@ clc
 close all 
 
 
-Vx = 3; %nombre de divisions en x de V.C SENSE HALO
-Vy = 3;
+Vx = 5; %nombre de divisions en x de V.C SENSE HALO
+Vy = 5 ;
 
 
 
 datos = INPUT(Vx,Vy);
 C = meshes (datos, datos.malla);
 
-matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A.
+matriu_A = A_laplace(datos,C); %Pseudo-pressure matrix A. [Vx*Vy, Vx*Vy]
 
-v = zeros(Vx,Vy);
-u = zeros(Vx,Vy);
-u(2,2) = 1;
 
+v = zeros(datos.Nx,datos.Ny);
+u = zeros(datos.Nx,datos.Ny);
+u(3,3) = 1; % El camp de velocitats té HALO
+u = haloupdate(u);
 %[nodal_mesh num] = nodalmesh(Vx,Vy)
 
-u_p = divergencia_u(datos, u, v, nodal_mesh);
+u_p = divergencia_u(datos, u, v); %u_p = [Vx*Vy,1]
 
 pseudo_p = zeros(Vx*Vx,1); %Pseudo-pressure vector NOT KNOWN 
 
-
+[nodal_mesh num] = nodalmesh(Vx,Vy);
 %Per solucionar el problema de la matriu A singular (no es podria invertir)
 
 matriu_A(1,1)=-5;
 
-pseudo_p = inv(matriu_A)*u_p;
+pseudo_p = inv(matriu_A)*u_p; %pseudo_p = [Vx*Vy,1]
 
-[p_gradX p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh, num)
+[p_gradX, p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh); 
 
 u_n1 = u - p_gradX;
 v_n1 = v - p_gradY;
 
-divvvvvv = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
+divergence_field = divergencia_u(datos, u_n1, v_n1);
 
-
-%UEEEEEEA dona zero la div jejeje
-%  |
-%  |
-%  V
-%  V
-sum(divvvvvv)
+sum(divergence_field)
 
 for i = 1:datos.Nx
     for j = 1:datos.Ny
