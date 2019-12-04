@@ -14,8 +14,8 @@
 % - Paula Sorolla Bayod
 
 function delta_T = TimeStep (datos,u,v)
-        %Time for convective term
-       delta = datos.L/datos.Vx;
+    %Time for convective term
+    delta = datos.L/datos.Vx;
     Tc_u = min(datos.L/(datos.Vx*max(max(u))));
     Tc_v = min(datos.H/(datos.Vy*max(max(v))));
     Tc = min (Tc_u,Tc_v);

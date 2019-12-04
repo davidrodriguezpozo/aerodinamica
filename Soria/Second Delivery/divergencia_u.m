@@ -31,17 +31,16 @@ Delta = datos.L/Vx;
 %      v_s = v(k,j+1);
 %     end
 
-        for i=2:Vx+1
-            for j=2:Vy+1
-               u_p = u(i,j);
-               v_p = v(i,j);
-               u_w = u(i-1,j);
-               v_s = u(i,j-1);
-            k = nodal_mesh(i-1,j-1); 
-            div_u(k) = Delta*(u_p-u_w+v_p-v_s);
-            end
-
+    for i=2:Vx+1
+        for j=2:Vy+1
+           u_p = u(i,j);
+           v_p = v(i,j);
+           u_w = u(i,j-1);
+           v_s = v(i,j-1);
+           k = nodal_mesh(i-1,j-1); 
+           div_u(k) = Delta*(u_p-u_w+v_p-v_s);
         end
+    end
 
 end
 

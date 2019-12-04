@@ -37,7 +37,7 @@ v = zeros(Vx,Vy);
 u = zeros(Vx,Vy);
 u(2,2) = 1;
 
-%[nodal_mesh num] = nodalmesh(Vx,Vy)
+[nodal_mesh num] = nodalmesh(Vx,Vy)
 
 u_p = divergencia_u(datos, u, v, nodal_mesh);
 

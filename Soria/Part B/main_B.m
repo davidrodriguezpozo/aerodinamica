@@ -27,8 +27,8 @@ clc
 close all 
 
 
-Vx = 10; %N� de divisions en x de V.C.
-Vy = 10;
+Vx = 3; %N� de divisions en x de V.C.
+Vy = 3;
 
 datos = Input(Vx,Vy);
 C = meshes (datos, datos.malla);

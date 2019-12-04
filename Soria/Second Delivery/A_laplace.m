@@ -1,4 +1,4 @@
-function A = A_laplace(datos,C)
+function A = A_laplace(datos)
 
 Vx = datos.Vx;
 Vy = datos.Vy;
@@ -7,7 +7,7 @@ Vy = datos.Vy;
 
 
    
-    A = zeros(num,num); %Serà la matriu que es multiplicarà per p.
+    A = zeros(num,num); %Serï¿½ la matriu que es multiplicarï¿½ per p.
     
     for i=1:num
         %Diagonal term:
