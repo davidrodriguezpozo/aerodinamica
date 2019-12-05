@@ -58,5 +58,6 @@ if (0.2*min([delta_tc, delta_td])<delta_t)
     delta_t=0.2*min([delta_tc, delta_td]);
     
 end
-  delta_t = 0.001;
+    delta_t=0.2*min([delta_tc, delta_td]);
+%delta_t = 0.01;
 end

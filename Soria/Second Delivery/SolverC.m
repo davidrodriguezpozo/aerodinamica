@@ -19,24 +19,24 @@
 function [u, v, P, P_an, P_num, u_an, u_num, v_an, v_num, acu_time] =  SolverC(datos, C, ii, jj)
 
 [u, v, R_u, R_v, u_p, v_p, u_prev, v_prev] = CondicionesIniciales(datos, C);
-final_time = 100;
+final_time = 10;
 P = zeros(datos.Nx);
 P_prev = zeros(datos.Nx);
 dif_P = 1;
 dif_U = 1;
 dif_V = 1;
-delta_V = 1e-7;
 
 Nx = datos.Nx;
 Ny = datos.Ny;
 
 delta_t = 0.01;
-time = delta_t;
+delta_t = TimeStep (datos,u,v,delta_t);
+time = 0;
 R_uant = zeros(Nx,Nx);
 R_vant = zeros(Nx,Nx);
 index = 1;
 
-while time <= final_time && dif_U > delta_V && dif_V > delta_V
+while time <= final_time
     
     [nodal_mesh, num] = nodalmesh(datos.Vx,datos.Vy);
     [conv_u, diff_u, conv_v, diff_v] = Numerical (datos, C, u, v);
@@ -63,8 +63,8 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     P = haloupdate(P);
     p_gradX = haloupdate(p_gradX);
     p_gradY = haloupdate(p_gradY);
-    u_p = haloupdate(u_p);
-    v_p = haloupdate(v_p);
+%     u_p = haloupdate(u_p);
+%     v_p = haloupdate(v_p);
 
     %Corrected velocities
     u = u_p - p_gradX;
@@ -88,23 +88,10 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
 
     dif_U = 0;
     dif_V = 0;
-    
-    for i = 1:Nx
-        for j = 1:Ny
-            if abs(u(i,j)-u_prev(i,j))> dif_U
-                dif_U = abs(u(i,j)-u_prev(i,j));
-            end
-            
-            if abs(v(i,j)-v_prev(i,j))> dif_V
-                dif_V = abs(v(i,j)-v_prev(i,j));
-            end
-        end
-    end
-    
-    delta_t = TimeStep (datos,u,v,delta_t);
     %delta_t = 0.01;
     time = time + delta_t;
     
     datos.F = exp(-8*pi^2*datos.mu*time);
+    delta_t = TimeStep (datos,u,v,delta_t)
 
 end
