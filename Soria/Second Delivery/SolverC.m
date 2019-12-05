@@ -58,9 +58,10 @@ while time <= final_time
     rho = datos.rho;
     mu = datos.mu;
     
-    [P, pseudo_p, step_time] = pressure (datos, u_p, v_p, nodal_mesh, delta_t);
-    [p_gradX, p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh); 
-    P = haloupdate(P);
+%     [P, pseudo_p, step_time] = pressure (datos, u_p, v_p, nodal_mesh, delta_t);
+%     [p_gradX, p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh); 
+    P = pressureC(datos, u, v, u_p, v_p, delta_t,P);
+    [p_gradX, p_gradY] = gradient_pC(datos, P, nodal_mesh,delta_t);
     p_gradX = haloupdate(p_gradX);
     p_gradY = haloupdate(p_gradY);
 %     u_p = haloupdate(u_p);

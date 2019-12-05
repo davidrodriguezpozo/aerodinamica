@@ -12,7 +12,7 @@ function [P_matrix_halo, pseudo_p, delta_t] = pressure (datos, u_p, v_p, nodal_m
 % 
 % v = zeros(datos.Nx,datos.Ny);
 % u = zeros(datos.Nx,datos.Ny);
-% u(3,3) = 1; % El camp de velocitats t� HALO
+u(3,3) = 1; % El camp de velocitats t� HALO
 % v(3,3) = 1;
 % u = haloupdate(u);
 [nodal_mesh, num] = nodalmesh(datos.Vx,datos.Vy);
