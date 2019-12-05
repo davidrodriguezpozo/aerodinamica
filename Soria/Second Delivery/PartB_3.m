@@ -14,7 +14,7 @@ function PartB_3
     
 %     for i=1:length(Vx)
 %         datos = INPUT(Vx(i),Vy(i),Re);
-        datos = INPUT(Vx,Vy,Re)
+        datos = INPUT(Vx,Vy,Re);
         datos.F = 1;
         
         %Random predicted velocity field that satisfies mass conservation
@@ -27,6 +27,9 @@ function PartB_3
         [u, v, P, time] = SolverB(datos, C, u_p, v_p);
         display(u);
         display(v);
+        latex(sym(u_p))
+        latex(sym(vpa(u)))
+        latex(sym(vpa(v)))
 %     end
     
     %PlotsB (C,P,Vx,errorP)

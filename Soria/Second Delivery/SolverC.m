@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%           FUNCTION SolverC        %%%%%%%%%%%%%
-%%%   This function allows enables the programmer to    %%%
-%%%   obtain the pressure field solution and velocity   %%%
+%%%   This function allows the programmer to obt        %%%
+%%%   the pressure field solution and velocity          %%%
 %%%   field for each instant of time until a stabilty   %%%
 %%%   is achieved or when final time is reached.        %%%
 %%%   The program also computes the numerical and       %%% 
@@ -16,12 +16,10 @@
 % - David Rodriguez Pozo
 % - Paula Sorolla Bayod
 
-function [u v P P_an P_num u_an u_num v_an v_num acu_time] =  SolverC(datos, C, ii, jj)
+function [u, v, P, P_an, P_num, u_an, u_num, v_an, v_num, acu_time] =  SolverC(datos, C, ii, jj)
 
-[u v R_u R_v u_p v_p u_prev v_prev] = CondicionesIniciales(datos, C);
-final_time = 3;
-[cp] = Coeff_Pressure (datos);
-
+[u, v, R_u, R_v, u_p, v_p, u_prev, v_prev] = CondicionesIniciales(datos, C);
+final_time = 100;
 P = zeros(datos.Nx);
 P_prev = zeros(datos.Nx);
 dif_P = 1;
@@ -32,38 +30,25 @@ delta_V = 1e-7;
 Nx = datos.Nx;
 Ny = datos.Ny;
 
-Td = 0.5*(datos.L/datos.Vx)*(datos.H/datos.Vy) / datos.mu;
-delta_T = 0.01;
-time = delta_T;
-    
+delta_t = 0.01;
+time = delta_t;
+R_uant = zeros(Nx,Nx);
+R_vant = zeros(Nx,Nx);
 index = 1;
 
 while time <= final_time && dif_U > delta_V && dif_V > delta_V
     
+    [nodal_mesh, num] = nodalmesh(datos.Vx,datos.Vy);
+    [conv_u, diff_u, conv_v, diff_v] = Numerical (datos, C, u, v);
     [u_p, v_p, R_uant, R_vant] = predicted(u,v,delta_t,datos, conv_u, diff_u, conv_v, diff_v, R_uant, R_vant,R_u,R_v);
     
-    
-    R_u_prev = R_u;
-    R_v_prev = R_v;
+%     
+%     R_u_prev = R_u;
+%     R_v_prev = R_v;
     
     u_prev = u;
     v_prev = v;
     
-    %datos.F = exp(-4*pi*datos.mu/datos.rho*time);
-    
-    [conv_u diff_u conv_v diff_v] = Numerical (datos, C, u, v);
-    
-    %Calculem R: R = - Conv(u)/V + Diff(u)/V
-    Vol = (datos.L/datos.Vx)*(datos.H/datos.Vy);
-    R_u = -(conv_u/Vol) + datos.mu*(diff_u/Vol);
-    R_v = -(conv_v/Vol) + datos.mu*(diff_v/Vol);
-    
-    for i = 2:datos.Nx-1
-        for j = 2:datos.Ny-1
-        u_p(i,j) = u(i,j) + delta_T*(3/2*R_u(i,j) - 1/2*R_u_prev(i,j));
-        v_p(i,j) = v(i,j) + delta_T*(3/2*R_v(i,j) - 1/2*R_v_prev(i,j));
-        end
-    end
     
     u_p = haloupdate(u_p);
     v_p = haloupdate(v_p);
@@ -73,31 +58,21 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
     rho = datos.rho;
     mu = datos.mu;
     
-    %delta_T = 0.02;
-
-    for i=2:Nx-1
-        for j=2:Ny-1
-            cp.bp(i,j)=-1/delta_T*rho*(u_p(i,j)*(dy)-u_p(i,j-1)*(dy)+v_p(i,j)*(dx)-v_p(i-1,j)*(dx));
-        end
-    end
-
-    [P P_prev dif_P] = SolverP (cp.ae, cp.aw, cp.an, cp.as, cp.ap, cp.bp, P_prev, P, dif_P, datos);
-    
+    [P, pseudo_p, step_time] = pressure (datos, u_p, v_p, nodal_mesh, delta_t);
+    [p_gradX, p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh); 
     P = haloupdate(P);
+    p_gradX = haloupdate(p_gradX);
+    p_gradY = haloupdate(p_gradY);
+    u_p = haloupdate(u_p);
+    v_p = haloupdate(v_p);
+
+    %Corrected velocities
+    u = u_p - p_gradX;
+    v = v_p - p_gradY;
     
     p_analytic = Analytic_Pressure (datos, C, time);
-    
     rho = datos.rho;
     mu = datos.mu;
-    
-    for i=2:Nx-1
-       for j=2:Nx-1
- 
-        u(i,j)=u_p(i,j)-delta_T/rho*(P(i,j+1)-P(i,j))/(dx);
-        v(i,j)=v_p(i,j)-delta_T/rho*(P(i+1,j)-P(i,j))/(dy);
- 
-        end
-    end
     
     u = haloupdate(u);
     v = haloupdate(v);
@@ -126,9 +101,9 @@ while time <= final_time && dif_U > delta_V && dif_V > delta_V
         end
     end
     
-    delta_T = TimeStep (datos,u,v);
-    
-    time = time + delta_T;
+    delta_t = TimeStep (datos,u,v,delta_t);
+    %delta_t = 0.01;
+    time = time + delta_t;
     
     datos.F = exp(-8*pi^2*datos.mu*time);
 

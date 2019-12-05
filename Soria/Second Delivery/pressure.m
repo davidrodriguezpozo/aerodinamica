@@ -1,4 +1,4 @@
-function [p pseudo_p delta_t] = pressure (datos, u_p, v_p)
+function [P_matrix_halo, pseudo_p, delta_t] = pressure (datos, u_p, v_p, nodal_mesh, delta_t)
 
 % Vx = 3; %nombre de divisions en x de V.C SENSE HALO
 % Vy = 3;
@@ -15,9 +15,9 @@ function [p pseudo_p delta_t] = pressure (datos, u_p, v_p)
 % u(3,3) = 1; % El camp de velocitats t� HALO
 % v(3,3) = 1;
 % u = haloupdate(u);
-[nodal_mesh num] = nodalmesh(datos.Vx,datos.Vy);
+[nodal_mesh, num] = nodalmesh(datos.Vx,datos.Vy);
 %[nodal_mesh num] = nodalmesh(datos.Vx,datos.Vy);
-delta_t = TimeStep(datos,u_p,v_p);
+delta_t = TimeStep(datos,u_p,v_p,delta_t);
 
 div_u_p = divergencia_u(datos, u_p, v_p, nodal_mesh, num); %u_p = [Vx*Vy,1]
 
@@ -31,17 +31,22 @@ pseudo_p = inv(matriu_A)*div_u_p; %pseudo_p = [Vx*Vy,1]
 
 p = pseudo_p*datos.rho / delta_t;
 
-[p_gradX, p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh); 
-p_gradX = haloupdate(p_gradX);
-p_gradY = haloupdate(p_gradY);
-u_p = haloupdate(u_p);
-v_p = haloupdate(v_p);
+P_matrix = zeros(datos.Vx,datos.Vy);
 
-u_n1 = u_p - p_gradX;
-v_n1 = v_p - p_gradY;
+for i=1:datos.Vy
+    for j=1:datos.Vx
+        k = nodal_mesh(i,j);
+        P_matrix(i,j) = p(k); % P_matrix =  [Vx,Vy]
+    end
+end
 
-divergence_field = divergencia_u(datos, u_n1, v_n1, nodal_mesh, num);
-% 
-sum(divergence_field)
+P_matrix_halo = zeros(datos.Vx+2,datos.Vy+2);
+
+for i=2:datos.Vx+1 
+    for j=2:datos.Vy+1
     
+    P_matrix_halo(i,j) = P_matrix(i-1,j-1);
+
+    end
+end
    

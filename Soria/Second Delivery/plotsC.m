@@ -57,3 +57,6 @@ figure(4);
     xlabel('X-axis [m]','Fontsize',16);
     ylabel('Y-axis [m]','Fontsize',16);
     title('Pressure at instant $t_0 =$ 0 s.','Fontsize',16)
+    
+  figure(6);
+  plot(acu_time,v_an);

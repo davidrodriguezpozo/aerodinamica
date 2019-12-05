@@ -18,5 +18,5 @@ function datos = INPUT(Vx,Vy,Re)
     datos.malla = 2;
     datos.mu=1/Re;
     
-    datos.mu = 1e-4;
+%     datos.mu = 1e-4;
     datos.rho = 1;
