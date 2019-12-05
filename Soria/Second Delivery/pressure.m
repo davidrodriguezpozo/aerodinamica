@@ -27,7 +27,7 @@ pseudo_p = zeros(datos.Vx*datos.Vx,1); %Pseudo-pressure vector NOT KNOWN
 matriu_A = A_laplace(datos); %Pseudo-pressure matrix A. [Vx*Vy, Vx*Vy]
 matriu_A(1,1)=-5; %Per solucionar el problema de la matriu A singular (no es podria invertir)
 
-pseudo_p = inv(matriu_A)*div_u_p; %pseudo_p = [Vx*Vy,1]
+pseudo_p = matriu_A\div_u_p; %pseudo_p = [Vx*Vy,1]
 
 p = pseudo_p*datos.rho / delta_t;
 
@@ -49,4 +49,6 @@ for i=2:datos.Vx+1
 
     end
 end
+
+    
    

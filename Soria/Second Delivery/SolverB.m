@@ -15,9 +15,9 @@
 % - Paula Sorolla Bayod
 
 function [u, v, p, step_time] = SolverB(datos, C, u_p, v_p)
-
+    delta_t = 0;
     [nodal_mesh, num] = nodalmesh(datos.Vx,datos.Vy);
-    [p, pseudo_p, step_time] = pressure (datos, u_p, v_p, nodal_mesh);
+    [p, pseudo_p, step_time] = pressure (datos, u_p, v_p, nodal_mesh, delta_t);
     [p_gradX, p_gradY] = gradient_p(datos, pseudo_p, nodal_mesh); 
     p_gradX = haloupdate(p_gradX);
     p_gradY = haloupdate(p_gradY);

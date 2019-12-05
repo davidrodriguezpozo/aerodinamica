@@ -15,6 +15,7 @@ function datos = INPUT(Vx,Vy,Re)
     datos.L = 1;
     datos.H = 1;
     
+    datos.Re = Re;
     datos.malla = 2;
     datos.mu=1/Re;
     

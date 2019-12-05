@@ -20,7 +20,7 @@ function PartB_3
         %Random predicted velocity field that satisfies mass conservation
         u_p = zeros(datos.Nx,datos.Ny); 
         v_p = zeros(datos.Nx,datos.Ny);
-        u_p(3,3) = 5;
+        u_p(2,2) = 5;
         u_p = haloupdate(u_p);
         v_p = haloupdate(v_p);
         C = meshes (datos, datos.malla);  
