@@ -10,7 +10,7 @@ function PartC_3
 %set(groot, 'Defaultaxesticklabelinterpreter','latex');
 %set(groot, 'DefaultLegendInterpreter','latex');
 
-clear all 
+clear all
 clc
 close all 
 
